@@ -1,0 +1,36 @@
+@startuml
+class User {
+-Username : String
+-Password : String
+}
+class Buddy {
+-ID : Integer
+-firstName : String
+-lastName : String
+-birthdate
+-mail : String
+}
+class Accounts {
+-Balance
+-List of Transactions
+}
+class BankAccount {
+-IBAN
+-Buddy
+}
+class Transactions {
+-ID
+-Sender
+-Receiver
+-Amount
+-Date
+}
+
+User --> Buddy : Connexion
+Buddy --> Accounts : has one or many
+Buddy -> BankAccount : has one or many
+Accounts --> Transactions : from one account
+Accounts <-- Transactions : to an account
+Accounts -> Accounts : Links
+BankAccount -- Transactions : Send/Retrieve Money
+@enduml
