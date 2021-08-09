@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
-<head>
-	<meta charset="UTF-8">
-	<title>Pay My Buddy</title>
-	 <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-</head>
-<body>
-	<h1>Pay My Buddy</h1>
+	<head>
+		<meta charset="UTF-8">
+		<title>Pay My Buddy</title>
+	 	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+	</head>
+	<body>
+		<h1>Pay My Buddy</h1>
 	
-</body>
+	<form>
+	Email:
+	<input type="text" :field="*{email}" />
+	<br/>
+	Password:
+	<input type="text" :field="*{password}" />
+	<br/>
+	<input type="submit" value="Login" />
+      </form>
+	
+	</body>
 </html>

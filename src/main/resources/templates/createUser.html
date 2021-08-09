@@ -2,25 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
    <head>
       <meta charset="UTF-8" />
-      <title>Create Buddy</title>
+      <title>Create User</title>
       <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
    </head>
    <body>
-      <h1>Create a Buddy:</h1>
+      <h1>Create a User:</h1>
             
-      <form th:action="@{/createBuddy}"
-         th:object="${Buddy}" method="POST">
-         First Name:
-         <input type="text" :field="*{firstName}" />    
-         <br/>
-         Last Name:
-         <input type="text" :field="*{lastName}" />     
-         <br/>
-         Email :
-         <input type="text" :field="*{email}" />    
-         <br/>
-         Birthdate:
-         <input type="text" :field="*{birthdate}" />     
+      <form th:action="@{/createUser}"
+         th:object="${User}" method="POST">
+         Username:
+         <input type="text" :field="*{username}" />    
          <br/>
          Password:
          <input type="text" :field="*{password}" />    

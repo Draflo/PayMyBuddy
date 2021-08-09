@@ -29,5 +29,4 @@ public class Buddy {
 	private String lastName;
 	private String email;
 	private String birthdate;
-	private String password;
 }

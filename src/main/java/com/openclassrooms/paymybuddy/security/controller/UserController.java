@@ -1,12 +1,11 @@
 package com.openclassrooms.paymybuddy.security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.openclassrooms.paymybuddy.security.model.User;
 import com.openclassrooms.paymybuddy.security.service.UserService;
@@ -17,9 +16,14 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping
+	@GetMapping("/login")
 	private String loginPage(Model model) {
 		return "login";
+	}
+	
+	@GetMapping("/")
+	private String welcomePage(Model model) {
+		return "welcomePage";
 	}
 	
 	@GetMapping("/users")
@@ -28,11 +32,26 @@ public class UserController {
 		return findAll;
 	}
 	
-	@PostMapping("/createUser")
-	public ResponseEntity<User> createUser(@RequestBody User user) {
-		User saveUser = userService.saveUser(user);
-		return ResponseEntity.created(null).body(saveUser);
+	@GetMapping("/createUser")
+	public String showCreateUserForm(Model model) {
+		User user = new User();
+		model.addAttribute("user", user);
+		return "createUser";
 	}
+	
+	@PostMapping("/createUser")
+	public String saveUser(Model model, @ModelAttribute("user") User user) {
+		String username = user.getUsername();
+		String password = user.getPassword();
+		User newUser = new User();
+		newUser.setUsername(username);
+		newUser.setPassword(password);
+		userService.saveUser(newUser);
+		
+		return "redirect:/login";
+		
+	}
+	
 	
 
 }
