@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.openclassrooms.paymybuddy.security.model.User;
+import com.openclassrooms.paymybuddy.security.model.Users;
 import com.openclassrooms.paymybuddy.security.service.UserService;
 
 @Controller
@@ -27,23 +27,23 @@ public class UserController {
 	}
 	
 	@GetMapping("/users")
-	public Iterable<User> getAll() {
-		Iterable<User> findAll = userService.findAll();
+	public Iterable<Users> getAll() {
+		Iterable<Users> findAll = userService.findAll();
 		return findAll;
 	}
 	
 	@GetMapping("/createUser")
 	public String showCreateUserForm(Model model) {
-		User user = new User();
+		Users user = new Users();
 		model.addAttribute("user", user);
 		return "createUser";
 	}
 	
 	@PostMapping("/createUser")
-	public String saveUser(Model model, @ModelAttribute("user") User user) {
+	public String saveUser(Model model, @ModelAttribute("user") Users user) {
 		String username = user.getUsername();
 		String password = user.getPassword();
-		User newUser = new User();
+		Users newUser = new Users();
 		newUser.setUsername(username);
 		newUser.setPassword(password);
 		userService.saveUser(newUser);

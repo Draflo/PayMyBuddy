@@ -1,8 +1,5 @@
 package com.openclassrooms.paymybuddy.security.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -16,8 +13,6 @@ import com.openclassrooms.paymybuddy.security.service.BuddyService;
 
 @Controller
 public class BuddyController {
-
-	private static List<Buddy> buddies = new ArrayList<Buddy>();
 	
 	@Autowired
 	private BuddyService buddyService;
@@ -37,6 +32,7 @@ public class BuddyController {
 		return "createBuddy";
 	}
 	
+	
 	@PostMapping("/createBuddy")
 	public String saveBuddy(Model model, @ModelAttribute("buddy") Buddy buddy) {
 		String firstName = buddy.getFirstName();
@@ -48,15 +44,14 @@ public class BuddyController {
 		newBuddy.setLastName(lastName);
 		newBuddy.setBirthdate(birthdate);
 		newBuddy.setEmail(email);
-
 		buddyService.saveBuddy(newBuddy);
-		buddies.add(newBuddy);
-		return "redirect:/buddies";
+		return "redirect:/friendList";
 	}
 	
 	@GetMapping("/friendList")
 	public String friendList(Model model) {
-		model.addAttribute("friendList", buddies);
+		Object buddies = buddyService.findAll();
+		model.addAttribute("friendList", buddies );
 		return "friendList";
 	}
 }

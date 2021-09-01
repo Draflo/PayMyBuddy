@@ -1,14 +1,13 @@
 package com.openclassrooms.paymybuddy.accounts.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 import com.openclassrooms.paymybuddy.accounts.service.AccountsService;
-import com.openclassrooms.paymybuddy.security.model.Buddy;
 
 @RestController
 public class AccountsController {
@@ -17,9 +16,10 @@ public class AccountsController {
 	private AccountsService accountsService;
 	
 	@PostMapping("/createAccount")
-	public ResponseEntity<Accounts> createAccount(@RequestBody Buddy owner, Accounts accounts) {
-		Accounts saveAccounts = accountsService.saveAccount(owner);
-		return ResponseEntity.created(null).body(saveAccounts);
+	public String saveAccounts(Model model, @ModelAttribute("accounts") Accounts accounts) {
+		accounts.setBalance(0);
+		accountsService.saveAccount(null);
+		return "redirect:/home";
 	}
 
 }

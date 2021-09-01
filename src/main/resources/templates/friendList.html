@@ -16,7 +16,7 @@
                <th>Birthdate</th>
                <th>Email</th>
             </tr>
-            <tr th:each ="buddy : ${buddies}">
+            <tr th:each ="buddy : ${friendList}">
                <td th:utext="${buddy.firstName}">...</td>
                <td th:utext="${buddy.lastName}">...</td>
                <td th:utext="${buddy.birthdate}">...</td>

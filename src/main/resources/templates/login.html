@@ -8,12 +8,12 @@
 	<body>
 		<h1>Pay My Buddy</h1>
 	
-	<form>
-	Email:
-	<input type="text" :field="*{email}" />
+	<form th:action="@{/login}" method="POST">
+	Username:
+	<input type="text" name="username" id="username" th:placeholder="Username" class="form-control" />
 	<br/>
 	Password:
-	<input type="text" :field="*{password}" />
+	<input type="text" name="password" id="password" th:placeholder="Password" class="form-control" />
 	<br/>
 	<input type="submit" value="Login" />
       </form>

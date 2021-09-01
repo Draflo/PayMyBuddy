@@ -9,24 +9,21 @@
       <h1>Create a Buddy:</h1>
             
       <form th:action="@{/createBuddy}"
-         th:object="${Buddy}" method="POST">
+         th:object="${buddy}" method="POST">
          First Name:
-         <input type="text" :field="*{firstName}" />    
+         <input type="text" th:field="*{firstName}" />    
          <br/>
          Last Name:
-         <input type="text" :field="*{lastName}" />     
+         <input type="text" th:field="*{lastName}" />     
          <br/>
          Email :
-         <input type="text" :field="*{email}" />    
+         <input type="text" th:field="*{email}" />    
          <br/>
          Birthdate:
-         <input type="text" :field="*{birthdate}" />     
-         <br/>
-         Password:
-         <input type="text" :field="*{password}" />    
+         <input type="text" th:field="*{birthdate}" />     
          <br/>
          
-         <input type="submit" value="Create" />
+         <input type="submit" value="Create Buddy" />
       </form>
        
       <br/>

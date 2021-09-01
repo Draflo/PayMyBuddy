@@ -9,15 +9,15 @@
       <h1>Create a User:</h1>
             
       <form th:action="@{/createUser}"
-         th:object="${User}" method="POST">
+         th:object="${user}" method="POST">
          Username:
-         <input type="text" :field="*{username}" />    
+         <input type="text" th:field="*{username}" />    
          <br/>
          Password:
-         <input type="text" :field="*{password}" />    
+         <input type="text" th:field="*{password}" />    
          <br/>
          
-         <input type="submit" value="Create" />
+         <input type="submit" value="Create User" />
       </form>
        
       <br/>

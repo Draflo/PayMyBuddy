@@ -8,6 +8,7 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * This is the User class of PMB
@@ -19,6 +20,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@ToString
 @Table(name = "owner")
 public class Buddy {
 
