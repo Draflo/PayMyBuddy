@@ -1,14 +1,15 @@
 package com.openclassrooms.paymybuddy.accounts.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 import com.openclassrooms.paymybuddy.accounts.service.AccountsService;
@@ -19,14 +20,11 @@ public class AccountsController {
 	@Autowired
 	private AccountsService accountsService;
 	
-//	@RequestMapping(value = "/username", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String currentEmail(Principal principal) {
-//        return principal.getName();
-//    }
-	
-	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	String loggedUser = authentication.getName();
+	@RequestMapping(value = "/username", method = RequestMethod.GET)
+    @ResponseBody
+    public String currentUserName(Principal principal) {
+        return principal.getName();
+    }
 	
 	@RequestMapping(value = "/createAccount", method = {RequestMethod.GET, RequestMethod.POST})
 	public String saveAccounts(Model model, @ModelAttribute("accounts") Accounts accounts) {

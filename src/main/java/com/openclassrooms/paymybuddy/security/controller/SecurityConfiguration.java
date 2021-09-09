@@ -28,6 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder);
 		
 	}
+	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		
