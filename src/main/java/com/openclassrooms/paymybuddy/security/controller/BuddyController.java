@@ -45,7 +45,7 @@ public class BuddyController {
 		newBuddy.setBirthdate(birthdate);
 		newBuddy.setEmail(email);
 		buddyService.saveBuddy(newBuddy);
-		return "redirect:/friendList";
+		return "redirect:/createAccount";
 	}
 	
 	@GetMapping("/friendList")

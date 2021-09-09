@@ -1,6 +1,7 @@
 package com.openclassrooms.paymybuddy.security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@GetMapping("/login")
 	private String loginPage(Model model) {
@@ -45,7 +49,7 @@ public class UserController {
 		String password = user.getPassword();
 		Users newUser = new Users();
 		newUser.setUsername(username);
-		newUser.setPassword(password);
+		newUser.setPassword(passwordEncoder.encode(password));
 		userService.saveUser(newUser);
 		
 		return "redirect:/login";
