@@ -4,10 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * This is the User class of PMB
@@ -19,6 +22,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@ToString
 @Table(name = "owner")
 public class Buddy {
 
@@ -29,5 +33,9 @@ public class Buddy {
 	private String lastName;
 	private String email;
 	private String birthdate;
-	private String password;
+	
+	@OneToOne(targetEntity = Users.class)
+	@JoinColumn(name = "users")
+	private Users users;
+	
 }

@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+import com.openclassrooms.paymybuddy.accounts.model.Accounts;
+import com.openclassrooms.paymybuddy.accounts.model.BankAccount;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +23,15 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private Date transactionDate;
+	
+	@OneToOne
+	private Accounts senderAccounts;
+	
+	@OneToOne
+	private Accounts receiverAccounts;
+	
+	@OneToOne
+	private BankAccount beneficiaryBankAccount;
 	private String name;
 	private String description;
 	private double amount;

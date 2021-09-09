@@ -38,4 +38,9 @@ public class AccountsService {
 		accountsRepository.save(accounts);
 		return accounts;
 	}
+	
+	public Accounts findByOwnerEmail(String email) {
+		Accounts accounts = accountsRepository.findByOwnerEmail(email);
+		return accounts;
+	}
 }

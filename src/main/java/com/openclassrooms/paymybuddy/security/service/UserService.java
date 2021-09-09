@@ -3,7 +3,7 @@ package com.openclassrooms.paymybuddy.security.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.openclassrooms.paymybuddy.security.model.User;
+import com.openclassrooms.paymybuddy.security.model.Users;
 import com.openclassrooms.paymybuddy.security.repository.UserRepository;
 
 @Service
@@ -12,11 +12,11 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public Iterable<User> findAll() {
+	public Iterable<Users> findAll() {
 		return userRepository.findAll();
 	}
 	
-	public User saveUser (User user) {
+	public Users saveUser (Users user) {
 		return userRepository.save(user);
 	}
 

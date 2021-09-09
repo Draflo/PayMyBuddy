@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Transfer</title>
+      <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+   </head>
+   <body>
+      <h1>Send Money to a Buddy :</h1>
+            
+      <form th:action="@{/transfer}"
+         th:object="${transaction}" method="POST">
+         Your Account :
+         <div th:object="${accountNumber}"></div>
+         <br/>
+         Your Buddy:
+         <input type="text" th:field="*{receiver}" />     
+         <br/>
+         Ammount :
+         <input type="number" th:field="*{amount}" />    
+         <br/>
+         
+         
+         <input type="submit" value="Send Money" />
+      </form>
+       
+      <br/>
+       
+      <!-- Check if errorMessage is not null and not empty -->
+       
+      <div th:if="${errorMessage}" th:utext="${errorMessage}"
+         style="color:red;font-style:italic;">
+         ...
+      </div>
+       
+   </body>
+</html>

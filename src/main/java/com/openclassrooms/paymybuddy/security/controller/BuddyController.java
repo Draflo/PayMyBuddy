@@ -1,35 +1,57 @@
 package com.openclassrooms.paymybuddy.security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.paymybuddy.security.model.Buddy;
 import com.openclassrooms.paymybuddy.security.service.BuddyService;
 
-@RestController
+@Controller
 public class BuddyController {
-
+	
 	@Autowired
 	private BuddyService buddyService;
 	
-	@GetMapping("/welcome")
-	public String welcomePage() {
-		return "Welcome to PayMyBuddy";
+	@Value("${error.message")
+	private String errorMessage;
+	
+	@GetMapping("/home")
+	public String welcomePage(Model model) {
+		return "home";
 	}
+	
+	@GetMapping("/createBuddy")
+	public String showCreateBuddyForm(Model model) {
+		Buddy buddy = new Buddy();
+		model.addAttribute("buddy", buddy);
+		return "createBuddy";
+	}
+	
 	
 	@PostMapping("/createBuddy")
-	public ResponseEntity<Buddy> createBuddy(@RequestBody Buddy buddy) {
-		Buddy saveBuddy = buddyService.saveBuddy(buddy);
-		return ResponseEntity.created(null).body(saveBuddy);
+	public String saveBuddy(Model model, @ModelAttribute("buddy") Buddy buddy) {
+		String firstName = buddy.getFirstName();
+		String lastName = buddy.getLastName();
+		String birthdate = buddy.getBirthdate();
+		String email = buddy.getEmail();
+		Buddy newBuddy = new Buddy();
+		newBuddy.setFirstName(firstName);
+		newBuddy.setLastName(lastName);
+		newBuddy.setBirthdate(birthdate);
+		newBuddy.setEmail(email);
+		buddyService.saveBuddy(newBuddy);
+		return "redirect:/createAccount";
 	}
 	
-	@GetMapping("/buddys")
-	public Iterable<Buddy> getAll() {
-		Iterable<Buddy> findAll = buddyService.findAll();
-		return findAll;
+	@GetMapping("/friendList")
+	public String friendList(Model model) {
+		Object buddies = buddyService.findAll();
+		model.addAttribute("friendList", buddies );
+		return "friendList";
 	}
 }
