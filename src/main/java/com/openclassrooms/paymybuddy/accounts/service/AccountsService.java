@@ -26,21 +26,26 @@ public class AccountsService {
 		return String.format("%06d", number);
 	}
 	
-	public Accounts saveAccount(final Buddy owner) {
-		Accounts accounts = accountsRepository.findByOwnerEmail(owner.getEmail());
+	public Accounts saveAccount(Buddy buddy) {
+		Accounts accounts = accountsRepository.findByBuddyEmail(buddy.getEmail());
 		if (accounts != null) {
 			return null;
 		}
 		
 		accounts = new Accounts();
-		accounts.setAccountNumber(owner.getId() + accountNumber());
-		accounts.setOwner(owner);
+		accounts.setAccountNumber(buddy.getId() + accountNumber());
+		accounts.setBuddy(buddy);
 		accountsRepository.save(accounts);
 		return accounts;
 	}
 	
 	public Accounts findByOwnerEmail(String email) {
-		Accounts accounts = accountsRepository.findByOwnerEmail(email);
+		Accounts accounts = accountsRepository.findByBuddyEmail(email);
 		return accounts;
 	}
+	
+//	public Accounts findByUsername(String username) {
+//		Accounts accounts = accountsRepository.findByUsername(username);
+//		return accounts;
+//	}
 }

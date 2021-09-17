@@ -18,7 +18,7 @@ public class AccountsController {
 	@Autowired
 	private AccountsService accountsService;
 	
-	@Autowired
+	
 	private UserInformation userInformation;
 	
 	

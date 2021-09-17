@@ -4,8 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.openclassrooms.paymybuddy.security.model.Buddy;
 
@@ -15,6 +15,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "accounts")
 public class Accounts {
 	
 	@Id
@@ -23,9 +24,7 @@ public class Accounts {
 	private String accountNumber;
 	private double balance;
 	
-	@OneToOne(targetEntity = Buddy.class)
-	@JoinColumn(name = "owner")
-	private Buddy owner;
+	@OneToOne(mappedBy = "accounts")
+	private Buddy buddy;
 	
-
 }

@@ -8,6 +8,7 @@ import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 @Repository
 public interface AccountsRepository extends CrudRepository<Accounts, Long> {
 	
-	Accounts findByOwnerEmail(String email);
-
+	Accounts findByBuddyEmail(String email);
+	
+	//Accounts findByUsername(String username);
 }

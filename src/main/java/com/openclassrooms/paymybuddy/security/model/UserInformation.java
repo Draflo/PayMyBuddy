@@ -4,19 +4,14 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 import com.openclassrooms.paymybuddy.accounts.model.BankAccount;
 
-@Component
+
 public class UserInformation implements UserDetails { 
 	
-
-/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 private Users users;
 private Buddy buddy;
 private Accounts accounts;
@@ -42,6 +37,10 @@ private BankAccount bankAccount;
 	@Override
 	public String getUsername() {
 		return this.users.getUsername();
+	}
+	
+	public Long getId() {
+		return this.users.getId();
 	}
 	
 	public String getFirstName() {

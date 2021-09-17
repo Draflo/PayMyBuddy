@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.security.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +26,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "owner")
+@Table(name = "buddy")
 public class Buddy {
 
 	@Id
@@ -34,8 +37,15 @@ public class Buddy {
 	private String email;
 	private String birthdate;
 	
-	@OneToOne(targetEntity = Users.class)
-	@JoinColumn(name = "users")
+	@OneToOne(mappedBy = "buddy")
 	private Users users;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "accounts_id", referencedColumnName = "id")
+	private Accounts accounts;
+	
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "bankaccount_id", referencedColumnName = "id")
+//	private BankAccount bankAccount;
 	
 }
