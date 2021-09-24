@@ -13,13 +13,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 import com.openclassrooms.paymybuddy.accounts.service.AccountsService;
+import com.openclassrooms.paymybuddy.security.model.Buddy;
 import com.openclassrooms.paymybuddy.security.model.UserInformation;
+import com.openclassrooms.paymybuddy.security.service.BuddyService;
 
 @Controller
 public class AccountsController {
 	
 	@Autowired
 	private AccountsService accountsService;
+	
+	@Autowired
+	private BuddyService buddyService;
 	
 	public static String accountNumber() {
 		Random random = new Random();
@@ -32,9 +37,10 @@ public class AccountsController {
 	public String saveAccounts(Model model, @ModelAttribute("accounts") Accounts accounts, Authentication authentication) {
 		UserInformation userInformation = (UserInformation)authentication.getPrincipal();
 		accounts.setBalance(0);
-		accounts.setBuddy(userInformation.getBuddy());
-		accounts.setAccountNumber(userInformation.getBuddy().getId() + accountNumber());
-		accountsService.saveAccount(userInformation.getBuddy());
+		Buddy findByUsersUsername = buddyService.findByUsersUsername(userInformation.getUsername());
+		accounts.setBuddy(findByUsersUsername);
+		accounts.setAccountNumber(findByUsersUsername.getId() + accountNumber());
+		accountsService.saveAccount(findByUsersUsername);
 		model.addAttribute("balance", accounts.getBalance());
 		model.addAttribute("numberAcc", accounts.getAccountNumber());
 		return "redirect:/createdAccount";

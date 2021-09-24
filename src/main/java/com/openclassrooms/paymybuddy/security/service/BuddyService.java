@@ -19,5 +19,9 @@ public class BuddyService {
 	public Iterable<Buddy> findAll() {
 		return buddyRepository.findAll();
 	}
+	
+	public Buddy findByUsersUsername(String username) {
+		return buddyRepository.findByUsersUsername(username);
+	}
 
 }
