@@ -1,9 +1,14 @@
 package com.openclassrooms.paymybuddy.accounts.model;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,6 +30,14 @@ public class Accounts {
 	private double balance;
 	
 	@OneToOne(mappedBy = "accounts")
+	@JoinColumn(name = "buddy_id", referencedColumnName = "id")
 	private Buddy buddy;
+	
+	@ManyToMany
+	private Set<Accounts> connections = new TreeSet<>();
+	
+	public void addConnection(final Accounts accounts) {
+		this.connections.add(accounts);
+	}
 	
 }

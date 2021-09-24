@@ -38,10 +38,10 @@ public class Buddy {
 	private String birthdate;
 	
 	@OneToOne(mappedBy = "buddy")
+	@JoinColumn(name = "users_id", referencedColumnName = "id")
 	private Users users;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "accounts_id", referencedColumnName = "id")
 	private Accounts accounts;
 	
 //	@OneToOne(cascade = CascadeType.ALL)
