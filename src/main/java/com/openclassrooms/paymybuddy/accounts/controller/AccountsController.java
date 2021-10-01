@@ -1,13 +1,10 @@
 package com.openclassrooms.paymybuddy.accounts.controller;
 
-import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -26,30 +23,24 @@ public class AccountsController {
 	@Autowired
 	private BuddyService buddyService;
 	
-	public static String accountNumber() {
-		Random random = new Random();
-		int number = random.nextInt(999999);
-		return String.format("%06d", number);
-	}
+	
 	
 	
 	@RequestMapping(value = "/createAccount", method = {RequestMethod.GET, RequestMethod.POST})
-	public String saveAccounts(Model model, @ModelAttribute("accounts") Accounts accounts, Authentication authentication) {
+	public String saveAccounts(Model model, Authentication authentication) {
 		UserInformation userInformation = (UserInformation)authentication.getPrincipal();
-		accounts.setBalance(0);
 		Buddy findByUsersUsername = buddyService.findByUsersUsername(userInformation.getUsername());
-		accounts.setBuddy(findByUsersUsername);
-		accounts.setAccountNumber(findByUsersUsername.getId() + accountNumber());
 		accountsService.saveAccount(findByUsersUsername);
-		model.addAttribute("balance", accounts.getBalance());
-		model.addAttribute("numberAcc", accounts.getAccountNumber());
+		Accounts createdAccounts = accountsService.findByBuddyEmail(findByUsersUsername.getEmail());
+		model.addAttribute("balance", createdAccounts.getBalance());
+		model.addAttribute("numberAcc", createdAccounts.getAccountNumber());
 		return "redirect:/createdAccount";
 	}
 	
 	@GetMapping("/myAccount")
-	public String myAccount (Model model, @ModelAttribute("accounts") Accounts accounts, Authentication authentication) {
+	public String myAccount (Model model, Authentication authentication) {
 		UserInformation userInformation  = (UserInformation)authentication.getPrincipal();
-		accountsService.findByBuddyEmail(userInformation.getEmail());
+		Accounts accounts = accountsService.findByBuddyEmail(userInformation.getEmail());
 		model.addAttribute("balance", accounts.getBalance());
 		model.addAttribute("numberAcc", accounts.getAccountNumber());
 		return "myAccount";

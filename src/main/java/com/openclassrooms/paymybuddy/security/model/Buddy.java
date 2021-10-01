@@ -37,15 +37,12 @@ public class Buddy {
 	private String email;
 	private String birthdate;
 	
-	@OneToOne(mappedBy = "buddy")
+	@OneToOne
 	@JoinColumn(name = "users_id", referencedColumnName = "id")
 	private Users users;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "buddy")
 	private Accounts accounts;
-	
-//	@OneToOne(cascade = CascadeType.ALL)
-//	@JoinColumn(name = "bankaccount_id", referencedColumnName = "id")
-//	private BankAccount bankAccount;
+
 	
 }

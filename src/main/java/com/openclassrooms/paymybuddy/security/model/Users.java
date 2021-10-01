@@ -40,7 +40,7 @@ public class Users {
 	@NotNull
 	private boolean enabled;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "users")
 	private Buddy buddy;
 }
 

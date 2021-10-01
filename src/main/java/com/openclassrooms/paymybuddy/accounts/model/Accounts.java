@@ -3,6 +3,7 @@ package com.openclassrooms.paymybuddy.accounts.model;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,9 +30,12 @@ public class Accounts {
 	private String accountNumber;
 	private double balance;
 	
-	@OneToOne(mappedBy = "accounts")
+	@OneToOne
 	@JoinColumn(name = "buddy_id", referencedColumnName = "id")
 	private Buddy buddy;
+	
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "accounts")
+	private BankAccount bankAccount;
 	
 	@ManyToMany
 	private Set<Accounts> connections = new TreeSet<>();

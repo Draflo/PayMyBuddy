@@ -1,5 +1,7 @@
 package com.openclassrooms.paymybuddy.accounts.service;
 
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +20,20 @@ public class AccountsService {
 	@Autowired
 	private AccountsRepository accountsRepository;
 	
-	
+	public static String accountNumber() {
+		Random random = new Random();
+		int number = random.nextInt(999999);
+		return String.format("%06d", number);
+	}
 	
 	public Accounts saveAccount(Buddy buddy) {
 		Accounts accounts = accountsRepository.findByBuddyEmail(buddy.getEmail());
 		if (accounts == null) {
 			accounts = new Accounts();
-			return accounts;
+			accounts.setBalance(0);
+			accounts.setBuddy(buddy);
+			accounts.setAccountNumber(buddy.getId() + accountNumber());
+			return accountsRepository.save(accounts);
 		}
 		accountsRepository.save(accounts);
 		return accounts;
