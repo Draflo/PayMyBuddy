@@ -23,5 +23,9 @@ public class BuddyService {
 	public Buddy findByUsersUsername(String username) {
 		return buddyRepository.findByUsersUsername(username);
 	}
+	
+	public Buddy findByAccountsId(Long id) {
+		return buddyRepository.findByAccountsId(id);
+	}
 
 }

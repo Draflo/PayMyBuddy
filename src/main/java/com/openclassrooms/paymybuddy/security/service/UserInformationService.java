@@ -32,7 +32,10 @@ public class UserInformationService implements UserDetailsService {
 			throw new UsernameNotFoundException(username);
 		}
 		final Buddy buddy = buddyRepository.findByUsersUsername(username);
-		final Accounts accounts = accountsRepository.findByBuddyEmail(buddy.getEmail());
+		Accounts accounts = new Accounts();
+		if (buddy != null) {
+			accounts = accountsRepository.findByBuddyEmail(buddy.getEmail());
+		}
 		UserInformation userInformation = new UserInformation(user, buddy, accounts, null);
 		return userInformation;
 	}

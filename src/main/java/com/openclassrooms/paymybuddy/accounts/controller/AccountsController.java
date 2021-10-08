@@ -16,31 +16,29 @@ import com.openclassrooms.paymybuddy.security.service.BuddyService;
 
 @Controller
 public class AccountsController {
-	
+
 	@Autowired
 	private AccountsService accountsService;
-	
+
 	@Autowired
 	private BuddyService buddyService;
-	
-	
-	
-	
-	@RequestMapping(value = "/createAccount", method = {RequestMethod.GET, RequestMethod.POST})
+
+	@RequestMapping(value = "/createAccount", method = { RequestMethod.GET, RequestMethod.POST })
 	public String saveAccounts(Model model, Authentication authentication) {
-		UserInformation userInformation = (UserInformation)authentication.getPrincipal();
+		UserInformation userInformation = (UserInformation) authentication.getPrincipal();
 		Buddy findByUsersUsername = buddyService.findByUsersUsername(userInformation.getUsername());
 		accountsService.saveAccount(findByUsersUsername);
 		Accounts createdAccounts = accountsService.findByBuddyEmail(findByUsersUsername.getEmail());
 		model.addAttribute("balance", createdAccounts.getBalance());
 		model.addAttribute("numberAcc", createdAccounts.getAccountNumber());
-		return "redirect:/createdAccount";
+		return "createdAccount";
 	}
-	
+
 	@GetMapping("/myAccount")
-	public String myAccount (Model model, Authentication authentication) {
-		UserInformation userInformation  = (UserInformation)authentication.getPrincipal();
-		Accounts accounts = accountsService.findByBuddyEmail(userInformation.getEmail());
+	public String myAccount(Model model, Authentication authentication) {
+		UserInformation userInformation = (UserInformation) authentication.getPrincipal();
+		Buddy findByUsersUsername = buddyService.findByUsersUsername(userInformation.getUsername());
+		Accounts accounts = accountsService.findByBuddyEmail(findByUsersUsername.getEmail());
 		model.addAttribute("balance", accounts.getBalance());
 		model.addAttribute("numberAcc", accounts.getAccountNumber());
 		return "myAccount";
