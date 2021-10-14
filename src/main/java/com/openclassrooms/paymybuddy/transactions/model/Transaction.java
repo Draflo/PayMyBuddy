@@ -1,6 +1,6 @@
 package com.openclassrooms.paymybuddy.transactions.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +22,7 @@ public class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private Date transactionDate;
+	private LocalDate transactionDate;
 	
 	@OneToOne
 	private Accounts senderAccounts;
@@ -32,9 +32,9 @@ public class Transaction {
 	
 	@OneToOne
 	private BankAccount beneficiaryBankAccount;
-	private String name;
 	private String description;
 	private double amount;
-	private double fee;
+	private double fee = amount * 0.005;
+	
 
 }
