@@ -34,6 +34,7 @@ public class Transaction {
 	private BankAccount beneficiaryBankAccount;
 	private String description;
 	private double amount;
-	private double fee;
+	private double fee = amount * 0.005;
+	
 
 }

@@ -55,8 +55,9 @@ public class TransactionController {
 		transaction.setTransactionDate(LocalDate.now());
 		transaction.setAmount(amount);
 		transaction.setDescription(description);
-		transactionService.validation(myAccounts, transactionInfo);
-		return "sucessTransfer";
+		transactionService.validation(myAccounts, transaction);
+		transactionService.balanceUpdate(myAccounts, transaction.getReceiverAccounts(), transaction);
+		return "home";
 	}
 
 }
