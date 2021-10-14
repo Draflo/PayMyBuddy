@@ -3,6 +3,7 @@ package com.openclassrooms.paymybuddy.security.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -43,6 +44,7 @@ public class UserController {
 		return "createUser";
 	}
 	
+	@Transactional
 	@PostMapping("/createUser")
 	public String saveUser(Model model, @ModelAttribute("user") Users user) {
 		String username = user.getUsername();
@@ -50,6 +52,7 @@ public class UserController {
 		Users newUser = new Users();
 		newUser.setUsername(username);
 		newUser.setPassword(passwordEncoder.encode(password));
+		newUser.setEnabled(true);
 		userService.saveUser(newUser);
 		
 		return "redirect:/login";

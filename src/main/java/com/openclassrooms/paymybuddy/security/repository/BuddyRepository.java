@@ -8,4 +8,6 @@ import com.openclassrooms.paymybuddy.security.model.Buddy;
 @Repository
 public interface BuddyRepository extends CrudRepository<Buddy, Long>{
 
+	 Buddy findByUsersUsername(String username);
+	 Buddy findByAccountsId(Long id);
 }

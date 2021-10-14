@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Add a Friend</title>
+      <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+   </head>
+   <body>
+      <h1>Add a Friend:</h1>
+            
+      <form th:action="@{/addConnection}" method="POST">
+         Email :
+         <input type="text" th:value="${email}" name="email" />    
+         <br/>
+         <input type="submit" value="Add this Friend" />
+      </form>
+       
+      <br/>
+       
+      <!-- Check if errorMessage is not null and not empty -->
+       
+      <div th:if="${errorMessage}" th:utext="${errorMessage}"
+         style="color:red;font-style:italic;">
+         ...
+      </div>
+       
+   </body>
+</html>

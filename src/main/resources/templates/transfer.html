@@ -7,17 +7,19 @@
    </head>
    <body>
       <h1>Send Money to a Buddy :</h1>
+      
+      <h2> My Balance = <span th:text="${balance}"></span></h2>
             
       <form th:action="@{/transfer}"
          th:object="${transaction}" method="POST">
-         Your Account :
-         <div th:object="${accountNumber}"></div>
+         Your Buddy's email:
+         <input type="text" th:value="${email}" name="email" />     
          <br/>
-         Your Buddy:
-         <input type="text" th:field="*{receiver}" />     
-         <br/>
-         Ammount :
+         Amount :
          <input type="number" th:field="*{amount}" />    
+         <br/>
+         Description :
+         <input type="text" th:field="*{description}" />    
          <br/>
          
          

@@ -1,5 +1,7 @@
 package com.openclassrooms.paymybuddy.security.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -10,12 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.openclassrooms.paymybuddy.security.model.Buddy;
 import com.openclassrooms.paymybuddy.security.service.BuddyService;
+import com.openclassrooms.paymybuddy.security.service.UserService;
 
 @Controller
 public class BuddyController {
 	
 	@Autowired
 	private BuddyService buddyService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Value("${error.message")
 	private String errorMessage;
@@ -34,7 +40,7 @@ public class BuddyController {
 	
 	
 	@PostMapping("/createBuddy")
-	public String saveBuddy(Model model, @ModelAttribute("buddy") Buddy buddy) {
+	public String saveBuddy(Model model, @ModelAttribute("buddy") Buddy buddy, Principal principal) {
 		String firstName = buddy.getFirstName();
 		String lastName = buddy.getLastName();
 		String birthdate = buddy.getBirthdate();
@@ -44,14 +50,15 @@ public class BuddyController {
 		newBuddy.setLastName(lastName);
 		newBuddy.setBirthdate(birthdate);
 		newBuddy.setEmail(email);
+		newBuddy.setUsers(userService.findByUsername(principal.getName()));
 		buddyService.saveBuddy(newBuddy);
 		return "redirect:/createAccount";
 	}
 	
-	@GetMapping("/friendList")
-	public String friendList(Model model) {
-		Object buddies = buddyService.findAll();
-		model.addAttribute("friendList", buddies );
-		return "friendList";
-	}
+//	@GetMapping("/friendList")
+//	public String friendList(Model model) {
+//		Object buddies = buddyService.findAll();
+//		model.addAttribute("friendList", buddies );
+//		return "friendList";
+//	}
 }

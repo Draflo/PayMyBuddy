@@ -6,8 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-
-import com.openclassrooms.paymybuddy.security.model.Buddy;
+import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +14,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "bankaccount")
 public class BankAccount {
 	
 	@Id
@@ -22,8 +22,8 @@ public class BankAccount {
 	private long id;
 	private String IBAN;
 	
-	@OneToOne(targetEntity = Buddy.class)
-	@JoinColumn(name = "owner")
-	private Buddy owner;
+	@OneToOne
+	@JoinColumn(name = "account_id", referencedColumnName = "id")
+	private Accounts accounts;
 
 }

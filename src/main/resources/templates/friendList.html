@@ -13,16 +13,18 @@
             <tr>
                <th>First Name</th>
                <th>Last Name</th>
-               <th>Birthdate</th>
-               <th>Email</th>
+               
             </tr>
-            <tr th:each ="buddy : ${friendList}">
-               <td th:utext="${buddy.firstName}">...</td>
-               <td th:utext="${buddy.lastName}">...</td>
-               <td th:utext="${buddy.birthdate}">...</td>
-               <td th:utext="${buddy.email}">...</td>
+            <tr th:each ="accounts : ${friendList}">
+               <td th:utext="${accounts.firstName}">...</td>
+               <td th:utext="${accounts.lastName}">...</td>
+               
+               
             </tr>
          </table>
       </div>
+      
+      <h1><a href="addAFriend">Add a new Friend</a></h1>
+      <h1><a href="home">Home</a></h1>
    </body>
 </html>

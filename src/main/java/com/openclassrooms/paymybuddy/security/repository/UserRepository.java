@@ -7,5 +7,7 @@ import com.openclassrooms.paymybuddy.security.model.Users;
 
 @Repository
 public interface UserRepository extends CrudRepository<Users, Long>{
+	
+	Users findByUsername(String username);
 
 }
