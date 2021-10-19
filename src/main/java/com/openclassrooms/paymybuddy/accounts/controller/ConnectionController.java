@@ -38,7 +38,6 @@ public class ConnectionController {
 		Accounts myAccounts = accountsRepository.findByBuddyEmail(userInformation.getEmail());
 		for (Accounts accounts : myAccounts.getConnections() ) {
 			Buddy myFriend =  buddyService.findByAccountsId(accounts.getId());
-			System.out.println(myFriend);
 			friendList.add(myFriend);
 		}
 		model.addAttribute("friendList", friendList);

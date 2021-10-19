@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Friend List</title>
+      <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+   </head>
+   <body>
+      <h1>Friend List</h1>
+      <br/><br/>
+      <div>
+         <table border="1">
+            <tr>
+			   <th>Username</th>
+               <th>First Name</th>
+               <th>Last Name</th>
+               
+            </tr>
+            <tr th:each ="buddy : ${usersList}">
+               <td th:utext="${buddy.username}">...</td>
+               <td th:utext="${buddy.firstName}">...</td>
+               <td th:utext="${buddy.lastName}">...</td>
+               
+               
+            </tr>
+         </table>
+      </div>
+      
+      <h1><a href="addAFriend">Add a new Friend</a></h1>
+      <h1><a href="home">Home</a></h1>
+   </body>
+</html>

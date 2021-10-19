@@ -57,6 +57,7 @@ public class TransactionController {
 		transaction.setDescription(description);
 		transactionService.validation(myAccounts, transaction);
 		transactionService.balanceUpdate(myAccounts, transaction.getReceiverAccounts(), transaction);
+		transactionService.saveTransaction(transaction);
 		return "home";
 	}
 
