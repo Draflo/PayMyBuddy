@@ -1,7 +1,6 @@
 package com.openclassrooms.paymybuddy.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -52,12 +51,7 @@ class UserTest {
 	}
 
 	@Test
-	final void testShowCreateUserForm() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	final void testCreateUser() throws Exception {
+	final void testFindUserByUsername() throws Exception {
 		Users users = new Users();
 		users.setUsername("TestEntity");
 		users.setPassword("password");

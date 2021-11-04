@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
    <head>
       <meta charset="UTF-8" />
-      <title>Friend List</title>
+      <title>Users List</title>
       <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
    </head>
    <body>
-      <h1>Friend List</h1>
+      <h1>Users List</h1>
       <br/><br/>
       <div>
          <table border="1">
@@ -17,7 +17,7 @@
                
             </tr>
             <tr th:each ="buddy : ${usersList}">
-               <td th:utext="${buddy.username}">...</td>
+               <td th:utext="${buddy.users.username}">...</td>
                <td th:utext="${buddy.firstName}">...</td>
                <td th:utext="${buddy.lastName}">...</td>
                
@@ -25,8 +25,5 @@
             </tr>
          </table>
       </div>
-      
-      <h1><a href="addAFriend">Add a new Friend</a></h1>
-      <h1><a href="home">Home</a></h1>
    </body>
 </html>
