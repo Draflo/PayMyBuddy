@@ -17,18 +17,25 @@ private Buddy buddy;
 private Accounts accounts;
 private BankAccount bankAccount;
 	
-	public UserInformation (Users users, Buddy buddy, Accounts accounts, BankAccount bankAccount) {
+	public UserInformation (Users users, Buddy buddy, Accounts accounts, BankAccount bankAccount, Collection<? extends GrantedAuthority> collection) {
 		this.users = users;
 		this.buddy = buddy;
 		this.accounts = accounts;
 		this.bankAccount = bankAccount;
 	}
 	
-	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return null;
 	}
-
+	
+	public Users getUsers() {
+		return users;
+	}
+	
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+	
 	@Override
 	public String getPassword() {
 		return this.users.getPassword();
@@ -93,5 +100,7 @@ private BankAccount bankAccount;
 	public boolean isEnabled() {
 		return this.users.isEnabled();
 	}
+
+	
 
 }

@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.test;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -49,13 +50,14 @@ class UserControllerTest {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	
+	@Before
+	void setup() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+	}
 
-	public static List<Users> users = new ArrayList<>();
-	
-	public static List<Buddy> buddies = new ArrayList<>();
-	
-	static {
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	void testGetAllUsers() throws Exception {
 		Users user1 = new Users();
 		user1.setUsername("Test1");
 		user1.setPassword("password");
@@ -70,20 +72,12 @@ class UserControllerTest {
 		buddy2.setUsers(user2);
 		buddy2.setFirstName("Buddy2");
 		buddy2.setLastName("Last2");
+		List<Users> users = new ArrayList<>();
 		users.add(user1);
 		users.add(user2);
-
-	}
-	
-	@Before
-	void setup() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
-	}
-
-	@Test
-	@WithMockUser(roles = "ADMIN")
-	void testGetAllUsers() throws Exception {
-		
+		when(userService.findAll()).thenReturn(users);
+		when(buddyService.findByUsersUsername("Test1")).thenReturn(buddy1);
+		when(buddyService.findByUsersUsername("Test2")).thenReturn(buddy2);
 		mockMvc.perform(get("/users")).andExpect(status().isOk());
 	}
 

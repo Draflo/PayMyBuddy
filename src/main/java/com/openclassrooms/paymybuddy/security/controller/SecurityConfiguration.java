@@ -18,9 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-//	@Autowired
-//	private DataSource dataSource;
-
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -30,9 +27,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().antMatchers("/", "/createUser", "/login", "/css/*").permitAll().antMatchers("/admin")
+		http.authorizeRequests().antMatchers("/", "/createUser", "/login", "/css/*").permitAll().antMatchers("/users")
 				.hasRole("ADMIN").antMatchers("/user").hasRole("USER").anyRequest().authenticated().and().formLogin()
-				.loginPage("/login").defaultSuccessUrl("/home").and().logout().logoutSuccessUrl("/");
+				.loginPage("/login").defaultSuccessUrl("/home").and().logout().logoutUrl("/appLogout").logoutSuccessUrl("/");
 	}
 
 	@Bean
@@ -43,8 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public DaoAuthenticationProvider authProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		authProvider.setUserDetailsService(userDetailsService);
-		authProvider.setPasswordEncoder(passwordEncoder);
+		authProvider.setUserDetailsService(this.userDetailsService);
+		authProvider.setPasswordEncoder(this.passwordEncoder);
 		return authProvider;
 	}
 

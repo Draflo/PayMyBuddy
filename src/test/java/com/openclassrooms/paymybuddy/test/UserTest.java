@@ -1,66 +1,86 @@
 package com.openclassrooms.paymybuddy.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.openclassrooms.paymybuddy.security.model.Users;
 import com.openclassrooms.paymybuddy.security.repository.UserRepository;
 import com.openclassrooms.paymybuddy.security.service.UserService;
 
-@DataJpaTest
-@RunWith(SpringRunner.class)
-@Import(UserService.class)
+@WebMvcTest(UserService.class)
 class UserTest {
-	
-	@Autowired
+
+	@MockBean
 	private UserRepository userRepository;
-	
-	@Autowired
-	private TestEntityManager testEntityManager;
-	
+
 	@Autowired
 	private UserService userService;
-	
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
 
-	@Test
-	final void testGetAllUsers() throws Exception {
+	@MockBean
+	private UserDetailsService userDetailsService;
+
+	public static List<Users> userList = new ArrayList<>();
+
+	static {
 		Users user1 = new Users();
 		user1.setUsername("Test1");
 		user1.setPassword("password");
 		Users user2 = new Users();
 		user2.setUsername("Test2");
 		user2.setPassword("password");
-		testEntityManager.persist(user1);
-		testEntityManager.persist(user2);
+		userList.add(user1);
+		userList.add(user2);
+	}
+
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+	}
+
+	@Test
+	final void testGetAllUsers() throws Exception {
+		when(userRepository.findAll()).thenReturn(userList);
+
 		Iterable<Users> users = userService.findAll();
-		
+
 		assertThat(users.toString().contains("Test1"));
 		assertThat(users.toString().contains("Test2"));
-		
+
 	}
 
 	@Test
 	final void testFindUserByUsername() throws Exception {
-		Users users = new Users();
-		users.setUsername("TestEntity");
-		users.setPassword("password");
-		testEntityManager.persist(users);
-		
-		Users foundUsers = userRepository.findByUsername("TestEntity");
+		Users user1 = new Users();
+		user1.setUsername("Test1");
+		user1.setPassword("password");
 
-		assertThat(foundUsers.getUsername()).isEqualTo("TestEntity");
+		when(userRepository.findByUsername(Mockito.anyString())).thenReturn(user1);
+
+		Users foundUsers = userService.findByUsername(Mockito.anyString());
+
+		assertThat(foundUsers.getUsername()).isEqualTo("Test1");
+	}
+	
+	@Test
+	final void testSaveUser() {
+		Users userToSave = new Users();
+		userToSave.setUsername("Saved");
 		
+		when(userRepository.save(userToSave)).thenReturn(userToSave);
+		
+		Users userSaved = userService.saveUser(userToSave);
+		
+		assertThat(userSaved.getUsername()).isEqualTo("Saved");
 	}
 
 }
