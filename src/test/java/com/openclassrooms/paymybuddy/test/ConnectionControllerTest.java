@@ -29,6 +29,7 @@ import com.openclassrooms.paymybuddy.accounts.service.AccountsService;
 import com.openclassrooms.paymybuddy.accounts.service.BankAccountService;
 import com.openclassrooms.paymybuddy.accounts.service.ConnectionService;
 import com.openclassrooms.paymybuddy.security.model.Buddy;
+import com.openclassrooms.paymybuddy.security.repository.BuddyRepository;
 import com.openclassrooms.paymybuddy.security.service.BuddyService;
 import com.openclassrooms.paymybuddy.security.service.UserService;
 import com.openclassrooms.paymybuddy.transactions.service.TransactionService;
@@ -41,6 +42,9 @@ class ConnectionControllerTest {
 
 	@MockBean
 	private UserService userService;
+	
+	@MockBean
+	private BuddyRepository buddyRepository;
 
 	@MockBean
 	private BuddyService buddyService;

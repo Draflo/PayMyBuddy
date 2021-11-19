@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -14,6 +16,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.openclassrooms.paymybuddy.security.model.Buddy;
+import com.openclassrooms.paymybuddy.security.model.Role;
 import com.openclassrooms.paymybuddy.security.model.Users;
 import com.openclassrooms.paymybuddy.security.repository.UserRepository;
 import com.openclassrooms.paymybuddy.security.service.UserService;
@@ -74,13 +78,27 @@ class UserTest {
 	@Test
 	final void testSaveUser() {
 		Users userToSave = new Users();
+		Buddy buddy = new Buddy();
+		Role user = new Role();
+		Collection<Role> roles = new ArrayList<>() ;
+		roles.add(user);
 		userToSave.setUsername("Saved");
+		userToSave.setId(1);
+		userToSave.setPassword("password");
+		userToSave.setEnabled(true);
+		userToSave.setRoles(roles);
+		userToSave.setBuddy(buddy);
 		
 		when(userRepository.save(userToSave)).thenReturn(userToSave);
 		
 		Users userSaved = userService.saveUser(userToSave);
 		
 		assertThat(userSaved.getUsername()).isEqualTo("Saved");
+		assertThat(userSaved.getId()).isEqualTo(1);
+		assertThat(userSaved.getPassword()).isEqualTo("password");
+		assertThat(userSaved.getRoles()).contains(user);
+		assertThat(userSaved.getBuddy()).isEqualTo(buddy);
+		assertThat(userSaved.isEnabled());
 	}
 
 }

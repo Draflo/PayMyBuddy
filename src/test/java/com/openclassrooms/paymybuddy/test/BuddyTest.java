@@ -13,7 +13,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 import com.openclassrooms.paymybuddy.security.model.Buddy;
+import com.openclassrooms.paymybuddy.security.model.Users;
 import com.openclassrooms.paymybuddy.security.repository.BuddyRepository;
 import com.openclassrooms.paymybuddy.security.service.BuddyService;
 
@@ -77,15 +79,28 @@ class BuddyTest {
 	}
 	
 	@Test
-	final void testSaveUser() {
+	final void testSaveBuddy() {
 		Buddy buddyToSave = new Buddy();
+		Accounts accounts = new Accounts();
+		Users users = new Users();
 		buddyToSave.setFirstName("Saved");
+		buddyToSave.setLastName("Buddy");
+		buddyToSave.setBirthdate("12/12/2012");
+		buddyToSave.setId(1);
+		buddyToSave.setAccounts(accounts);
+		buddyToSave.setUsers(users);
 		
 		when(buddyRepository.save(buddyToSave)).thenReturn(buddyToSave);
 		
 		Buddy buddySaved = buddyService.saveBuddy(buddyToSave);
 		
 		assertThat(buddySaved.getFirstName()).isEqualTo("Saved");
+		assertThat(buddySaved.getLastName()).isEqualTo("Buddy");
+		assertThat(buddySaved.getBirthdate()).isEqualTo("12/12/2012");
+		assertThat(buddySaved.getId()).isEqualTo(1);
+		assertThat(buddySaved.getAccounts()).isEqualTo(accounts);
+		assertThat(buddySaved.getUsers()).isEqualTo(users);
+		
 	}
 
 }

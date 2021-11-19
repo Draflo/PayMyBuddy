@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 import com.openclassrooms.paymybuddy.accounts.service.AccountsService;
+import com.openclassrooms.paymybuddy.exception.AccountsAlreadyExistException;
 import com.openclassrooms.paymybuddy.security.model.Buddy;
 import com.openclassrooms.paymybuddy.security.service.BuddyService;
 
@@ -24,11 +25,11 @@ public class AccountsController {
 	private BuddyService buddyService;
 
 	@RequestMapping(value = "/createAccount", method = { RequestMethod.GET, RequestMethod.POST })
-	public String saveAccounts(Model model, Authentication authentication) {
+	public String createAccount(Model model, Authentication authentication) throws AccountsAlreadyExistException {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = loggedInUser.getName();
 		Buddy findByUsersUsername = buddyService.findByUsersUsername(username);
-		accountsService.saveAccount(findByUsersUsername);
+		accountsService.createAccount(findByUsersUsername);
 		Accounts createdAccounts = accountsService.findByBuddyEmail(findByUsersUsername.getEmail());
 		model.addAttribute("balance", createdAccounts.getBalance());
 		model.addAttribute("numberAcc", createdAccounts.getAccountNumber());

@@ -5,3 +5,55 @@ h1 {
 table {
     border-collapse: collapse;
 }
+
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.checkbox {
+    margin-top: 200px;
+}
+
+.form-signin .checkbox {
+    font-weight: normal;
+}
+
+.form-signin .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.has-error {
+    color: red
+}
+
+.form-signin input {
+    margin-top: 10px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-radius: 10px;
+}
+
+input:focus {
+	border-color: #2bc829;
+}
+
+.form-signin button {
+	position: relative;
+    margin-top: 50px;
+    margin-left: 75px;
+    padding: 10px;
+}
