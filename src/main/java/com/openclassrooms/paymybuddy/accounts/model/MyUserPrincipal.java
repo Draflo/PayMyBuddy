@@ -13,7 +13,7 @@ public class MyUserPrincipal implements UserDetails {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Users user;
+	private Users users;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -23,38 +23,36 @@ public class MyUserPrincipal implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.users.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.users.getUsername();
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
-		return false;
+		return this.users.isEnabled();
 	}
 
 	public MyUserPrincipal(Users user) {
@@ -62,10 +60,10 @@ public class MyUserPrincipal implements UserDetails {
 	}
 
 	public Users getUser() {
-		return user;
+		return users;
 	}
 
 	public void setUser(Users user) {
-		this.user = user;
+		this.users = user;
 	}
 }

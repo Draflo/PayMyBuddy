@@ -23,5 +23,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 		}
 		return new MyUserPrincipal(user);
 	}
+	
+	
 
 }
