@@ -55,4 +55,10 @@ public class BuddyController {
 		return "redirect:/createAccount";
 	}
 	
+//	@GetMapping("/friendList")
+//	public String friendList(Model model) {
+//		Object buddies = buddyService.findAll();
+//		model.addAttribute("friendList", buddies );
+//		return "friendList";
+//	}
 }

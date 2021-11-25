@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 import com.openclassrooms.paymybuddy.accounts.repository.AccountsRepository;
-import com.openclassrooms.paymybuddy.exception.ConnectionDoesNotExistException;
-import com.openclassrooms.paymybuddy.exception.InsufficientFundsException;
 import com.openclassrooms.paymybuddy.transactions.model.Transaction;
 import com.openclassrooms.paymybuddy.transactions.repository.TransactionRepository;
 
@@ -29,16 +27,16 @@ public class TransactionService {
 	}
 
 	@Transactional
-	public Transaction validation(Accounts myAccounts, Transaction transactionInfo) throws InsufficientFundsException, ConnectionDoesNotExistException {
+	public Transaction validation(Accounts myAccounts, Transaction transactionInfo) {
 		if (myAccounts.getBalance() < (transactionInfo.getAmount() + transactionInfo.getFee())) {
 			System.err.println("You don't have enough funds for this transfer");
-			throw new InsufficientFundsException();
+			return null;
 		}
 		Set<Accounts> connections = transactionInfo.getSenderAccounts().getConnections();
 		if (!connections.contains(transactionInfo.getReceiverAccounts())) {
 			System.err.println(
 					"This buddy is not one of your friend. Add him to your friend so you can send him money ! ");
-			throw new ConnectionDoesNotExistException();
+			return null;
 		}
 		return null;
 	}

@@ -22,7 +22,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "accounts")
-public class Accounts implements Comparable<Accounts> {
+public class Accounts {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,11 +42,6 @@ public class Accounts implements Comparable<Accounts> {
 	
 	public void addConnection(final Accounts accounts) {
 		this.connections.add(accounts);
-	}
-
-	@Override
-	public int compareTo(Accounts o) {
-		return 0;
 	}
 	
 }
