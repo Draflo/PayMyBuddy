@@ -12,5 +12,5 @@ import com.openclassrooms.paymybuddy.transactions.model.Transaction;
 public interface TransactionRepository extends CrudRepository<Transaction, Long> {
 
 	@Query("SELECT t FROM Transaction t")
-	List<Transaction> findByOwner(String owner);
+	List<Transaction> findByUsersUsername(String username);
 }

@@ -7,40 +7,50 @@ import org.springframework.stereotype.Service;
 
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 import com.openclassrooms.paymybuddy.accounts.repository.AccountsRepository;
+import com.openclassrooms.paymybuddy.exception.AccountsAlreadyExistException;
+import com.openclassrooms.paymybuddy.exception.AccountsDoesNotExistException;
 import com.openclassrooms.paymybuddy.security.model.Buddy;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Service
-@Getter
-@Setter
 public class AccountsService {
 
 	@Autowired
 	private AccountsRepository accountsRepository;
-	
+
 	public static String accountNumber() {
 		Random random = new Random();
 		int number = random.nextInt(999999);
 		return String.format("%06d", number);
 	}
-	
-	public Accounts saveAccount(final Buddy owner) {
-		Accounts accounts = accountsRepository.findByOwnerEmail(owner.getEmail());
-		if (accounts != null) {
-			return null;
+
+	public Accounts saveAccount(Buddy buddy) throws AccountsDoesNotExistException {
+		Accounts accounts = accountsRepository.findByBuddyEmail(buddy.getEmail());
+		if (accounts == null) {
+			throw new AccountsDoesNotExistException();
 		}
-		
-		accounts = new Accounts();
-		accounts.setAccountNumber(owner.getId() + accountNumber());
-		accounts.setOwner(owner);
+		else {
 		accountsRepository.save(accounts);
 		return accounts;
+		}
 	}
-	
-	public Accounts findByOwnerEmail(String email) {
-		Accounts accounts = accountsRepository.findByOwnerEmail(email);
+
+	public Accounts createAccount(Buddy buddy) throws AccountsAlreadyExistException {
+		Accounts accounts = accountsRepository.findByBuddyEmail(buddy.getEmail());
+		if (accounts == null) {
+			accounts = new Accounts();
+			accounts.setBalance(0);
+			accounts.setBuddy(buddy);
+			accounts.setAccountNumber(buddy.getId() + accountNumber());
+			accountsRepository.save(accounts);
+			return accounts;
+		} else {
+			throw new AccountsAlreadyExistException();
+		}
+	}
+
+	public Accounts findByBuddyEmail(String email) {
+		Accounts accounts = accountsRepository.findByBuddyEmail(email);
 		return accounts;
 	}
+
 }

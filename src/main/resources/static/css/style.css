@@ -5,3 +5,69 @@ h1 {
 table {
     border-collapse: collapse;
 }
+
+body {
+    padding-top: 50px;
+    padding-bottom: 40px;
+    
+}
+
+.has-error {
+    color: red
+}
+
+.container {
+	border: solid;
+	border-radius: 10px;
+	border-color: gray;
+	width: 40%;
+	min-width: 450px;
+	margin: auto;
+}
+
+#logo {
+	background-color:#2bc829;
+	color: white;
+	padding: 10px;
+	padding-left: 25px;
+	padding-right: 25px;
+	border-radius: 10px;
+}
+
+input {
+	border-radius: 10px;
+}
+
+input:focus {
+	outline: none;
+	border-color: #2bc829;
+}
+
+.form-signin {
+	padding: 15px;
+}
+
+.form-control {
+	margin: 40px auto;
+	display:block;
+	padding: 10px;
+	font-size: 16px;
+	width: 80%;
+	
+}
+
+label {
+	margin: auto;
+	width: 25%;
+	display: flex;
+	justify-content: center;
+}
+
+.button {
+	width: 30%;
+	margin: auto;
+	margin-top: 50px;
+	display: block;
+	font-size: 25px;
+	color: blue;
+}
