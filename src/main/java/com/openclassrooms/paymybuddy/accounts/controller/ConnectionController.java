@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,6 @@ import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 import com.openclassrooms.paymybuddy.accounts.repository.AccountsRepository;
 import com.openclassrooms.paymybuddy.accounts.service.ConnectionService;
 import com.openclassrooms.paymybuddy.security.model.Buddy;
-import com.openclassrooms.paymybuddy.security.model.UserInformation;
 import com.openclassrooms.paymybuddy.security.service.BuddyService;
 
 @Controller
@@ -34,11 +34,12 @@ public class ConnectionController {
 
 	@GetMapping("/friendList")
 	public String friendList(Model model, Authentication authentication) {
-		UserInformation userInformation = (UserInformation) authentication.getPrincipal();
-		Accounts myAccounts = accountsRepository.findByBuddyEmail(userInformation.getEmail());
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = loggedInUser.getName();
+		Buddy buddy = buddyService.findByUsersUsername(username);
+		Accounts myAccounts = accountsRepository.findByBuddyEmail(buddy.getEmail());
 		for (Accounts accounts : myAccounts.getConnections() ) {
 			Buddy myFriend =  buddyService.findByAccountsId(accounts.getId());
-			System.out.println(myFriend);
 			friendList.add(myFriend);
 		}
 		model.addAttribute("friendList", friendList);
@@ -53,8 +54,10 @@ public class ConnectionController {
 	@PostMapping("/addConnection")
 	public String addConnection(Model model, Authentication authentication, @RequestParam String email)
 			throws Exception {
-		UserInformation userInformation = (UserInformation) authentication.getPrincipal();
-		Accounts myAccounts = accountsRepository.findByBuddyEmail(userInformation.getEmail());
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = loggedInUser.getName();
+		Buddy buddy = buddyService.findByUsersUsername(username);
+		Accounts myAccounts = accountsRepository.findByBuddyEmail(buddy.getEmail());
 		connectionService.addConnection(email, myAccounts);
 		return "redirect:/friendList";
 	}
