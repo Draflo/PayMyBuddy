@@ -6,12 +6,7 @@ import org.springframework.stereotype.Service;
 import com.openclassrooms.paymybuddy.accounts.model.BankAccount;
 import com.openclassrooms.paymybuddy.accounts.repository.BankAccountRepository;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Service
-@Getter
-@Setter
 public class BankAccountService {
 	
 	@Autowired
