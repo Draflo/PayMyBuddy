@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 import com.openclassrooms.paymybuddy.accounts.repository.AccountsRepository;
 import com.openclassrooms.paymybuddy.accounts.service.ConnectionService;
+import com.openclassrooms.paymybuddy.exception.AccountsDoesNotExistException;
 import com.openclassrooms.paymybuddy.security.model.Buddy;
 import com.openclassrooms.paymybuddy.security.service.BuddyService;
 
@@ -52,13 +53,18 @@ public class ConnectionController {
 	}
 
 	@PostMapping("/addConnection")
-	public String addConnection(Model model, Authentication authentication, @RequestParam String email)
-			throws Exception {
+	public String addConnection(Model model, Authentication authentication, @RequestParam String email) {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = loggedInUser.getName();
 		Buddy buddy = buddyService.findByUsersUsername(username);
 		Accounts myAccounts = accountsRepository.findByBuddyEmail(buddy.getEmail());
-		connectionService.addConnection(email, myAccounts);
+		String message = "This accounts does not exists";
+		try {
+			connectionService.addConnection(email, myAccounts);
+		} catch (AccountsDoesNotExistException e) {
+			model.addAttribute("error", message);
+				return "addAFriend";
+		}
 		return "redirect:/friendList";
 	}
 }

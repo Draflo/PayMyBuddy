@@ -18,12 +18,14 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.openclassrooms.paymybuddy.accounts.controller.BankAccountController;
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
+import com.openclassrooms.paymybuddy.accounts.model.BankAccount;
 import com.openclassrooms.paymybuddy.accounts.repository.AccountsRepository;
 import com.openclassrooms.paymybuddy.accounts.service.AccountsService;
 import com.openclassrooms.paymybuddy.accounts.service.BankAccountService;
 import com.openclassrooms.paymybuddy.security.model.Buddy;
 import com.openclassrooms.paymybuddy.security.service.BuddyService;
 import com.openclassrooms.paymybuddy.security.service.UserService;
+import com.openclassrooms.paymybuddy.transactions.service.WithdrawalDepositService;
 
 @WebMvcTest(controllers = BankAccountController.class)
 class BankAccountControllerTest {
@@ -48,23 +50,56 @@ class BankAccountControllerTest {
 	
 	@MockBean
 	private UserDetailsService userDetailsService;
+	
+	@MockBean
+	private WithdrawalDepositService withdrawalDepositService;
 
 	@Test
 	@WithMockUser(roles = "user")
 	final void testShowBankAccountForm() throws Exception {
-		mockMvc.perform(get("/addABankAccount")).andExpect(status().isOk()).andExpect(view().name("addABankAccount"));
+		Buddy buddy = new Buddy();
+		buddy.setEmail("test@mail");
+		when(buddyService.findByUsersUsername("user")).thenReturn(buddy);
+		when(bankAccountService.findByBuddyEmail("test@mail")).thenReturn(null);
+		mockMvc.perform(get("/addABankAccount").with(csrf().asHeader())).andExpect(status().isOk()).andExpect(view().name("addABankAccount"));
+	}
+	
+	@Test
+	@WithMockUser(roles = "user")
+	final void testRedirectBankAccount() throws Exception {
+		Buddy buddy = new Buddy();
+		BankAccount myBankAccount = new BankAccount();
+		buddy.setEmail("test@mail");
+		when(buddyService.findByUsersUsername("user")).thenReturn(buddy);
+		when(bankAccountService.findByBuddyEmail("test@mail")).thenReturn(myBankAccount);
+		mockMvc.perform(get("/addABankAccount").with(csrf().asHeader())).andExpect(view().name("redirect:/bankAccount"));
 	}
 
 	@Test
 	@WithMockUser(roles = "user")
-	final void testSaveABankAccount() throws Exception {
+	final void testCreateABankAccount() throws Exception {
 		Buddy testBuddy = new Buddy();
 		testBuddy.setEmail("testmail.com");
 		Accounts testAccounts = new Accounts();
 		when(buddyService.findByUsersUsername(Mockito.anyString())).thenReturn(testBuddy);
 		when(accountsService.findByBuddyEmail("testmail.com")).thenReturn(testAccounts);
 		mockMvc.perform(post("/addABankAccount").with(csrf().asHeader()).param("IBAN", "TestIBAN"))
-				.andExpect(view().name("redirect:/myAccount"));
+				.andExpect(view().name("redirect:/bankAccount"));
+	}
+	
+	@Test
+	@WithMockUser(roles = "user")
+	final void testMyAccount() throws Exception {
+		Buddy testBuddy = new Buddy();
+		testBuddy.setEmail("testmail.com");
+		BankAccount testBankAccount = new BankAccount();
+		Accounts accounts = new Accounts();
+		testBankAccount.setAccounts(accounts);
+		testBankAccount.setIBAN("IBAN0123456789");
+		testBuddy.setAccounts(accounts);
+		when(buddyService.findByUsersUsername("user")).thenReturn(testBuddy);
+		when(bankAccountService.findByBuddyEmail("testmail.com")).thenReturn(testBankAccount);
+		mockMvc.perform(get("/bankAccount")).andExpect(view().name("bankAccount"));
 	}
 
 }

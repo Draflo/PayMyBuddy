@@ -1,7 +1,3 @@
-h1 {
-    color:#0000FF;
-}
-
 table {
     border-collapse: collapse;
 }
@@ -71,3 +67,148 @@ label {
 	font-size: 25px;
 	color: blue;
 }
+
+.btn-info {
+	width: 30%;
+	margin: auto;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	display: block;
+	font-size: 25px;
+	color: blue;
+	text-align: center;
+	border: solid 1px gray;
+	border-radius: 10px;
+	background-color: gainsboro;
+}
+
+.container .btn-info {
+	width: 30%;
+	margin: auto;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	display: block;
+	font-size: 25px;
+	color: blue;
+	text-align: center;
+	border: solid 1px gray;
+	border-radius: 10px;
+	background-color: gainsboro;
+}
+
+.header {
+	width:100%;
+	position: absolute;
+	top:0;
+	padding:0;
+	margin:0;
+	background-color: #2bc829;
+}
+.navbar {
+	list-style-type: none;
+  	
+}
+
+.logo {
+	color: white;
+	padding-left: 25px;
+}
+
+.navbar a {
+	float: left;
+	text-align: center;
+	padding: 10px;
+	color: white;
+	font-size: 26px;
+	max-width: 50%;
+}
+
+.navbar button {
+	float: right;
+	padding: 10px;
+	color: red;
+	font-size: 26px;
+	border: none;
+	background-color: #2bc829;
+}
+
+.home {
+	margin-top: 25px;
+	text-align: center;
+	height: 50%;
+}
+
+.home a {
+	background-color: #2bc829;
+	padding: 10px;
+	font-size: 44px;
+	color: white;
+	border-radius: 10px;
+}
+
+.form-control-buddy {
+	margin: 25px auto;
+	display:block;
+	padding: 10px;
+	font-size: 16px;
+	width: 80%;
+}
+
+.form-signin button {
+	border-radius: 10px;
+	border: 1px solid;
+	border-color: gray;
+}
+
+table {
+	margin: auto;
+	margin-bottom: 15px;
+	width: 75%;
+	text-align: center;
+	border-radius: 10px;
+}
+
+thead {
+	background-color: #2bc829;
+	font-size: 25px;
+	color: white;
+	padding: 100px;
+	
+}
+
+th {
+	padding: 25px;
+}
+
+td {
+	padding: 25px;
+}
+
+tbody {
+	font-size: 20px;
+}
+
+
+
+div.pager {
+    text-align: center; 
+}
+
+div.pager span {
+    display: inline-block;
+    width: 1.8em;
+    height: 1.8em;
+    line-height: 1.8;
+    text-align: center;
+    cursor: pointer;
+    background: white;
+    color: black;
+    margin-right: 0.5em;
+}
+
+div.pager span.active {
+    color:blue;
+    font-weight:bold;
+    text-align:center;
+}
+

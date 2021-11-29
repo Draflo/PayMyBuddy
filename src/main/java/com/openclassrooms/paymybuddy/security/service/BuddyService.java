@@ -1,5 +1,7 @@
 package com.openclassrooms.paymybuddy.security.service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,7 @@ public class BuddyService {
 	@Autowired
 	private BuddyRepository buddyRepository;
 	
-	public Buddy saveBuddy(Buddy buddy) {
+	public Buddy saveBuddy(Buddy buddy) throws SQLIntegrityConstraintViolationException {
 		return buddyRepository.save(buddy);
 	}
 

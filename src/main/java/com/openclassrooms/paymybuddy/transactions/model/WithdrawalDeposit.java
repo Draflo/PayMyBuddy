@@ -9,29 +9,25 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
+import com.openclassrooms.paymybuddy.accounts.model.BankAccount;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Setter
 @Getter
-public class Transaction {
-	
+@Setter
+public class WithdrawalDeposit {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private LocalDate transactionDate;
-	
-	@OneToOne
-	private Accounts senderAccounts;
-	
-	@OneToOne
-	private Accounts receiverAccounts;
-	
-	private String description;
 	private double amount;
-	private double fee;
 	
-
+	@OneToOne
+	private BankAccount myBankAccount;
+	
+	@OneToOne
+	private Accounts myAccounts;
 }
