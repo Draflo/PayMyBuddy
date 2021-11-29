@@ -13,7 +13,6 @@ import java.util.TreeSet;
 
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.openclassrooms.paymybuddy.accounts.controller.ConnectionController;
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 import com.openclassrooms.paymybuddy.accounts.repository.AccountsRepository;
 import com.openclassrooms.paymybuddy.accounts.service.AccountsService;
@@ -34,7 +34,7 @@ import com.openclassrooms.paymybuddy.security.service.BuddyService;
 import com.openclassrooms.paymybuddy.security.service.UserService;
 import com.openclassrooms.paymybuddy.transactions.service.TransactionService;
 
-@WebMvcTest
+@WebMvcTest(controllers = ConnectionController.class)
 class ConnectionControllerTest {
 
 	@Autowired
@@ -76,7 +76,7 @@ class ConnectionControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "user")
 	final void testFriendList() throws Exception {
 		Buddy testBuddy = new Buddy();
 		testBuddy.setEmail("testmail.com");
@@ -89,7 +89,7 @@ class ConnectionControllerTest {
 		friends.add(friend1);
 		friends.add(friend2);
 		testAccounts.setConnections(friends);
-		when(buddyService.findByUsersUsername(Mockito.anyString())).thenReturn(testBuddy);
+		when(buddyService.findByUsersUsername("user")).thenReturn(testBuddy);
 		when(accountsRepository.findByBuddyEmail("testmail.com")).thenReturn(testAccounts);
 		when(buddyService.findByAccountsId(friend1.getId())).thenReturn(buddy1);
 		when(buddyService.findByAccountsId(friend2.getId())).thenReturn(buddy2);
@@ -97,18 +97,18 @@ class ConnectionControllerTest {
 	}
 	
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "user")
 	final void testAddAFriend() throws Exception {
 		mockMvc.perform(get("/addAFriend")).andExpect(status().isOk()).andExpect(view().name("addAFriend"));
 	}
 	
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "user")
 	final void testAddConnection() throws Exception {
 		Buddy testBuddy = new Buddy();
 		testBuddy.setEmail("testmail.com");
 		Accounts testAccounts = new Accounts();
-		when(buddyService.findByUsersUsername(Mockito.anyString())).thenReturn(testBuddy);
+		when(buddyService.findByUsersUsername("user")).thenReturn(testBuddy);
 		when(accountsRepository.findByBuddyEmail("testmail.com")).thenReturn(testAccounts);
 		mockMvc.perform(post("/addConnection").with(csrf().asHeader()).param("email", "test@email.com")).andExpect(view().name("redirect:/friendList"));
 	}

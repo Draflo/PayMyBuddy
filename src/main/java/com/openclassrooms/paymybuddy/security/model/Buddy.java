@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 
@@ -32,9 +34,21 @@ public class Buddy {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	
+	@NotNull(message = "First Name cannot be empty")
+	@NotEmpty
 	private String firstName;
+	
+	@NotNull(message = "Last Name cannot be empty")
+	@NotEmpty
 	private String lastName;
+	
+	@NotNull(message = "Email cannot be empty")
+	@NotEmpty
 	private String email;
+	
+	@NotNull(message = "Birthdate cannot be empty")
+	@NotEmpty
 	private String birthdate;
 	
 	@OneToOne

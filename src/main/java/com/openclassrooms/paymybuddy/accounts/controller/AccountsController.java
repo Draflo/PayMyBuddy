@@ -1,5 +1,7 @@
 package com.openclassrooms.paymybuddy.accounts.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,12 +16,17 @@ import com.openclassrooms.paymybuddy.accounts.service.AccountsService;
 import com.openclassrooms.paymybuddy.exception.AccountsAlreadyExistException;
 import com.openclassrooms.paymybuddy.security.model.Buddy;
 import com.openclassrooms.paymybuddy.security.service.BuddyService;
+import com.openclassrooms.paymybuddy.transactions.model.Transaction;
+import com.openclassrooms.paymybuddy.transactions.service.TransactionService;
 
 @Controller
 public class AccountsController {
 
 	@Autowired
 	private AccountsService accountsService;
+	
+	@Autowired
+	private TransactionService transactionService;
 
 	@Autowired
 	private BuddyService buddyService;
@@ -42,6 +49,8 @@ public class AccountsController {
 		String username = loggedInUser.getName();
 		Buddy findByUsersUsername = buddyService.findByUsersUsername(username);
 		Accounts accounts = accountsService.findByBuddyEmail(findByUsersUsername.getEmail());
+		List<Transaction> myTransactions = transactionService.findByUsersUsername(username);
+		model.addAttribute("myTransactions", myTransactions);
 		model.addAttribute("balance", accounts.getBalance());
 		model.addAttribute("numberAcc", accounts.getAccountNumber());
 		return "myAccount";

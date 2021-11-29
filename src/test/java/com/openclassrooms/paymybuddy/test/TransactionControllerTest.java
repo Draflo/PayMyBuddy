@@ -76,6 +76,12 @@ class TransactionControllerTest {
 	@Test
 	@WithMockUser(roles = "user")
 	final void testShowTransferForm() throws Exception {
+		Buddy myself = new Buddy();
+		myself.setEmail("myself@mail.com");
+		Accounts senderAccounts = new Accounts();
+		senderAccounts.setBalance(100);
+		when(buddyRepository.findByUsersUsername("user")).thenReturn(myself);
+		when(accountsRepository.findByBuddyEmail("myself@mail.com")).thenReturn(senderAccounts);
 		mockMvc.perform(get("/transfer")).andExpect(status().isOk()).andExpect(view().name("transfer"));
 	}
 
@@ -91,7 +97,7 @@ class TransactionControllerTest {
 		when(accountsRepository.findByBuddyEmail("myself@mail.com")).thenReturn(senderAccounts);
 		when(accountsRepository.findByBuddyEmail("test@mail.com")).thenReturn(receiver);
 		mockMvc.perform(post("/transfer").with(csrf().asHeader()).param("email", "test@mail.com").param("amount", "50").param("description", "TestTransfer"))
-				.andExpect(view().name("home"));
+				.andExpect(view().name("redirect:/myAccount"));
 	}
 
 }

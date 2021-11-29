@@ -38,8 +38,7 @@ public class Users {
 
 	@Column(name = "password")
 	@NotNull(message = "Password cannot be null")
-	@Size(min = 5, message = "Password must be at least 5 characters")
-	@NotEmpty
+	@Size(min = 5, max = 32, message = "Password must be between 5 and 32 characters")
 	private String password;
 
 	@Column

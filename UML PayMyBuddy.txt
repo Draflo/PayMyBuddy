@@ -12,6 +12,7 @@ class Buddy {
 }
 class Accounts {
 -Balance
+-AccountNumber
 -List of Transactions
 }
 class BankAccount {
@@ -24,13 +25,21 @@ class Transactions {
 -Receiver
 -Amount
 -Date
+-Fee
+}
+class WithdrawalDeposit {
+-ID
+-Account
+-BankAccount
+-Amount
+-Date
 }
 
 User --> Buddy : Connexion
-Buddy --> Accounts : has one or many
-Buddy -> BankAccount : has one or many
+Buddy --> Accounts : has one
+Accounts -> BankAccount : has one
 Accounts --> Transactions : from one account
 Accounts <-- Transactions : to an account
-Accounts -> Accounts : Links
-BankAccount -- Transactions : Send/Retrieve Money
+Accounts -> Accounts : Linked for transactions
+BankAccount <--> WithdrawalDeposit : Send/Retrieve Money
 @enduml

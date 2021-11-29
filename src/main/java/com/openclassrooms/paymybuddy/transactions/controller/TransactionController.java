@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 import com.openclassrooms.paymybuddy.accounts.repository.AccountsRepository;
@@ -44,14 +43,20 @@ public class TransactionController {
 	}
 	
 	@GetMapping("/transfer")
-	public String transferForm(Model model) {
+	public String transferForm(Model model, Authentication authentication) {
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = loggedInUser.getName();
+		Buddy myself = buddyRepository.findByUsersUsername(username);
+		Accounts myAccounts = accountsRepository.findByBuddyEmail(myself.getEmail());
 		Transaction transaction = new Transaction();
+		model.addAttribute("balance", myAccounts.getBalance());
 		model.addAttribute("transaction", transaction);
+		model.addAttribute("connections", myAccounts.getConnections());
 		return "transfer";
 	}
 	
 	@PostMapping("/transfer")
-	public String transfer (@ModelAttribute("transaction") Transaction transactionInfo, Model model, Authentication authentication, @RequestParam String email) throws InsufficientFundsException, ConnectionDoesNotExistException {
+	public String transfer (@ModelAttribute("transaction") Transaction transactionInfo, Model model, Authentication authentication) throws InsufficientFundsException, ConnectionDoesNotExistException {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = loggedInUser.getName();
 		Buddy myself = buddyRepository.findByUsersUsername(username);
@@ -59,16 +64,18 @@ public class TransactionController {
 		model.addAttribute("balance", myAccounts.getBalance());
 		String description = transactionInfo.getDescription();
 		Double amount = transactionInfo.getAmount();
+		Accounts receiverAccounts = transactionInfo.getReceiverAccounts();
 		Transaction transaction = new Transaction();
 		transaction.setSenderAccounts(myAccounts);
-		transaction.setReceiverAccounts(accountsRepository.findByBuddyEmail(email));
+		transaction.setReceiverAccounts(receiverAccounts);
 		transaction.setTransactionDate(LocalDate.now());
 		transaction.setAmount(amount);
 		transaction.setDescription(description);
+		transaction.setFee(0.05);
 		transactionService.validation(myAccounts, transaction);
 		transactionService.balanceUpdate(myAccounts, transaction.getReceiverAccounts(), transaction);
 		transactionService.saveTransaction(transaction);
-		return "home";
+		return "redirect:/myAccount";
 	}
 
 }

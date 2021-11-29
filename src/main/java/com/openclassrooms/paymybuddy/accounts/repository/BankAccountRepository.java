@@ -8,5 +8,5 @@ import com.openclassrooms.paymybuddy.accounts.model.BankAccount;
 @Repository
 public interface BankAccountRepository extends CrudRepository<BankAccount, Long> {
 
-
+	BankAccount findByAccountsBuddyEmail(String email);
 }

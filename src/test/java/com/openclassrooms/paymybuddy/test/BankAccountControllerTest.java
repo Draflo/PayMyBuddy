@@ -64,7 +64,7 @@ class BankAccountControllerTest {
 		when(buddyService.findByUsersUsername(Mockito.anyString())).thenReturn(testBuddy);
 		when(accountsService.findByBuddyEmail("testmail.com")).thenReturn(testAccounts);
 		mockMvc.perform(post("/addABankAccount").with(csrf().asHeader()).param("IBAN", "TestIBAN"))
-				.andExpect(view().name("redirect:/myAccount"));
+				.andExpect(view().name("redirect:/bankAccount"));
 	}
 
 }

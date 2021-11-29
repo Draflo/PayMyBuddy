@@ -28,6 +28,16 @@ public class BankAccountController {
 	@Autowired
 	private AccountsRepository accountsRepository;
 	
+	@GetMapping("/bankAccount")
+	private String bankAccount(Model model, Authentication authentication) {
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		String username = loggedInUser.getName();
+		Buddy findByUsersUsername = buddyService.findByUsersUsername(username);
+		BankAccount myBankAccount = bankAccountService.findByBuddyEmail(findByUsersUsername.getEmail());
+		model.addAttribute("IBAN", myBankAccount.getIBAN());
+		return "bankAccount";
+	}
+	
 	@GetMapping("/addABankAccount")
 	public String showBankAccountForm(Model model) {
 		BankAccount ba = new BankAccount();
@@ -46,8 +56,8 @@ public class BankAccountController {
 		Accounts myAccounts = accountsRepository.findByBuddyEmail(buddy.getEmail());
 		newBA.setAccounts(myAccounts);
 		newBA.setIBAN(IBAN);
-		bankAccountService.saveBankAccount(bankAccount);
-		return "redirect:/myAccount";
+		bankAccountService.createBankAccount(buddy);
+		return "redirect:/bankAccount";
 	}
 		
 			

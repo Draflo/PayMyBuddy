@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -64,7 +63,7 @@ class AccountsControllerTest {
 		Accounts testAccounts = new Accounts();
 		testAccounts.setBalance(0);
 		testAccounts.setAccountNumber("1012345");
-		when(buddyService.findByUsersUsername(Mockito.anyString())).thenReturn(testBuddy);
+		when(buddyService.findByUsersUsername("user")).thenReturn(testBuddy);
 		when(accountsService.findByBuddyEmail("testmail.com")).thenReturn(testAccounts);
 		mockMvc.perform(post("/createAccount").with(csrf().asHeader())).andExpect(view().name("createdAccount"));
 	}
@@ -78,7 +77,7 @@ class AccountsControllerTest {
 		testAccounts.setBalance(0);
 		testAccounts.setAccountNumber("1012345");
 		testBuddy.setAccounts(testAccounts);
-		when(buddyService.findByUsersUsername(Mockito.anyString())).thenReturn(testBuddy);
+		when(buddyService.findByUsersUsername("user")).thenReturn(testBuddy);
 		when(accountsService.findByBuddyEmail("testmail.com")).thenReturn(testAccounts);
 		mockMvc.perform(get("/myAccount")).andExpect(view().name("myAccount"));
 	}

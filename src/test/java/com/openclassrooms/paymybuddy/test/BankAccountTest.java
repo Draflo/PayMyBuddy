@@ -13,6 +13,8 @@ import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 import com.openclassrooms.paymybuddy.accounts.model.BankAccount;
 import com.openclassrooms.paymybuddy.accounts.repository.BankAccountRepository;
 import com.openclassrooms.paymybuddy.accounts.service.BankAccountService;
+import com.openclassrooms.paymybuddy.exception.AccountsAlreadyExistException;
+import com.openclassrooms.paymybuddy.security.model.Buddy;
 
 @WebMvcTest(BankAccountService.class)
 class BankAccountTest {
@@ -27,16 +29,18 @@ class BankAccountTest {
 	private UserDetailsService userDetailsService;
 
 	@Test
-	final void testSaveBuddy() {
+	final void testSaveBuddy() throws AccountsAlreadyExistException {
 		BankAccount baToSave = new BankAccount();
+		Buddy buddy = new Buddy();
 		Accounts accounts = new Accounts();
+		buddy.setAccounts(accounts);
 		baToSave.setAccounts(accounts);
 		baToSave.setIBAN("TestIBAN");
 		baToSave.setId(1);
 		
 		when(bankAccountRepository.save(baToSave)).thenReturn(baToSave);
 		
-		BankAccount baSaved = bankAccountService.saveBankAccount(baToSave);
+		BankAccount baSaved = bankAccountService.createBankAccount(buddy);
 		
 		assertThat(baSaved.getIBAN()).isEqualTo("TestIBAN");
 		assertThat(baSaved.getAccounts()).isEqualTo(accounts);
