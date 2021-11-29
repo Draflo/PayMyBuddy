@@ -31,12 +31,11 @@
          		</div>
          	Amount :
          		<input type="number" min="0" onkeypress="return event.charCode >= 48" th:field="*{amount}" />
+         		<span class="has-error" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
          	             
          		<button class="button" type="submit" style="display: inline;">Send Money</button>
       		</form>
-       
-      
-      	</div>       
-       
+      		
+     	</div>         
    </body>
 </html>

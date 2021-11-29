@@ -37,9 +37,10 @@ class WithdrawalDeposit {
 
 User --> Buddy : Connexion
 Buddy --> Accounts : has one
-Accounts -> BankAccount : has one
+Accounts ---> BankAccount : has one
 Accounts --> Transactions : from one account
 Accounts <-- Transactions : to an account
 Accounts -> Accounts : Linked for transactions
-BankAccount <--> WithdrawalDeposit : Send/Retrieve Money
+Accounts <-->  BankAccount : Send or retrieve money
+(Accounts, BankAccount) - WithdrawalDeposit
 @enduml

@@ -8,7 +8,7 @@ body {
     
 }
 
-.alert {
+.has-error {
     color: red
 }
 
@@ -172,6 +172,43 @@ thead {
 	background-color: #2bc829;
 	font-size: 25px;
 	color: white;
+	padding: 100px;
 	
+}
+
+th {
+	padding: 25px;
+}
+
+td {
+	padding: 25px;
+}
+
+tbody {
+	font-size: 20px;
+}
+
+
+
+div.pager {
+    text-align: center; 
+}
+
+div.pager span {
+    display: inline-block;
+    width: 1.8em;
+    height: 1.8em;
+    line-height: 1.8;
+    text-align: center;
+    cursor: pointer;
+    background: white;
+    color: black;
+    margin-right: 0.5em;
+}
+
+div.pager span.active {
+    color:blue;
+    font-weight:bold;
+    text-align:center;
 }
 

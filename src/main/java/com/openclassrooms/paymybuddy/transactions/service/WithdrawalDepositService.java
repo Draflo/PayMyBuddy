@@ -36,7 +36,7 @@ public class WithdrawalDepositService {
 	public WithdrawalDeposit validation(Accounts myAccounts, WithdrawalDeposit WDInfo) throws InsufficientFundsException, BankAccountDoesNotExist {
 		if (myAccounts.getBalance() < (WDInfo.getAmount())) {
 			System.err.println("You don't have enough funds for this transfer");
-			throw new InsufficientFundsException();
+			throw new InsufficientFundsException("InsufficientFunds", "You don't have enough funds for this transfer");
 		}
 		
 		if (bankAccountService.findByBuddyEmail(myAccounts.getBuddy().getEmail()) == null) {

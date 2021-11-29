@@ -3,6 +3,7 @@ package com.openclassrooms.paymybuddy.test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +80,7 @@ class BuddyTest {
 	}
 	
 	@Test
-	final void testSaveBuddy() {
+	final void testSaveBuddy() throws SQLIntegrityConstraintViolationException {
 		Buddy buddyToSave = new Buddy();
 		Accounts accounts = new Accounts();
 		Users users = new Users();

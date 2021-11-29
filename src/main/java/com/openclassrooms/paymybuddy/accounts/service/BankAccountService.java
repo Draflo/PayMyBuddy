@@ -14,11 +14,12 @@ public class BankAccountService {
 	@Autowired
 	private BankAccountRepository bankAccountRepository;
 	
-	public BankAccount createBankAccount(Buddy buddy) throws AccountsAlreadyExistException {
+	public BankAccount createBankAccount(Buddy buddy, BankAccount BA) throws AccountsAlreadyExistException {
 		BankAccount bankAccount = bankAccountRepository.findByAccountsBuddyEmail(buddy.getEmail());
 		if (bankAccount == null) {
 			bankAccount = new BankAccount();
 			bankAccount.setAccounts(buddy.getAccounts());
+			bankAccount.setIBAN(BA.getIBAN());
 			bankAccountRepository.save(bankAccount);
 			return bankAccount;
 		} else {

@@ -1,7 +1,6 @@
 package com.openclassrooms.paymybuddy.transactions.controller;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -37,14 +36,6 @@ public class WithdrawalDepositController {
 	@Autowired
 	private BuddyRepository buddyRepository;
 	
-	@GetMapping("/myWD")
-	public String myTransactions (Model model, Authentication authentication) {
-		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-		String username = loggedInUser.getName();
-		List<WithdrawalDeposit> myWD = withdrawalDepositService.findByUsersUsername(username);
-		model.addAttribute("myWD", myWD);
-		return "myWD";
-	}
 
 	@GetMapping("/withdrawal")
 	public String withdrawForm(Model model, Authentication authentication) {

@@ -32,7 +32,7 @@ public class TransactionService {
 	public Transaction validation(Accounts myAccounts, Transaction transactionInfo) throws InsufficientFundsException, ConnectionDoesNotExistException {
 		if (myAccounts.getBalance() < (transactionInfo.getAmount() + transactionInfo.getFee())) {
 			System.err.println("You don't have enough funds for this transfer");
-			throw new InsufficientFundsException();
+			throw new InsufficientFundsException("InsufficientFunds", "You don't have enough funds for this transfer");
 		}
 		Set<Accounts> connections = transactionInfo.getSenderAccounts().getConnections();
 		if (!connections.contains(transactionInfo.getReceiverAccounts())) {

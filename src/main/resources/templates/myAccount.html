@@ -7,8 +7,7 @@
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
 		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
 		crossorigin="anonymous">
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 	</head>
 	<body>
 	
@@ -24,7 +23,7 @@
 		<h1 style="text-align: center;">My Transactions :</h1>
 		
 		<div>
-        <table id="transactions" class="table" border="1">
+        <table class="paginated" border="1">
          	<thead>
             	<tr>
               		<th>Connections</th>
@@ -34,32 +33,70 @@
             </thead>
             
             <tbody>
-           		<tr id="transactions" th:each ="transaction : ${myTransactions}">
+           		<tr th:each ="transaction : ${myTransactions}">
                		<td th:utext="${transaction.receiverAccounts.buddy.firstName}">...</td>
                		<td th:utext="${transaction.description}">...</td>
                		<td th:utext="${transaction.amount}">...</td> 
             	</tr>
             </tbody>         
         </table>
-      	</div>
-      		<div class="paging-nav">
-      			<a href="#" data-direction="-1"><<</a>
-      			<a href="#" data-page="0">1</a>
-      			<a href="#" data-page="1">2</a>
-      			<a href="#" data-page="2">3</a>
-      			<a href="#" data-direction="1">>></a>
-      		</div>
       	
       	</div>
+      	</div>
       	
-    	<script src="paging.js"></script>
-    	<script type="text/javascript">
-    	$('#transactions.table').paging({
-    		limit: 3,
-    		rowDisplayStyle: 'block',
-    		activePage: 0,
-    		rows: []
-    	});
-    	</script>
+    	<script>
+    $('table.paginated').each(function () {
+        var currentPage = 0;
+        var numPerPage = 3; // number of items 
+        var $table = $(this);
+        //var $tableBd = $(this).find("tbody");
+
+        $table.bind('repaginate', function () {
+            $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+        });
+        $table.trigger('repaginate');
+        var numRows = $table.find('tbody tr').length;
+        var numPages = Math.ceil(numRows / numPerPage);
+        var $pager = $('<div class="pager"></div>');
+        var $previous = $('<span class="previous"><<</spnan>');
+        var $next = $('<span class="next">>></spnan>');
+        for (var page = 0; page < numPages; page++) {
+            $('<span class="page-number"></span>').text(page + 1).bind('click', {
+                newPage: page
+            }, function(event) {
+                currentPage = event.data['newPage'];
+                $table.trigger('repaginate');
+                $(this).addClass('active').siblings().removeClass('active');
+            }).appendTo($pager).addClass('clickable');
+        }
+        $pager.insertAfter($table).find('span.page-number:first').addClass('active');
+        $previous.insertBefore('span.page-number:first');
+        $next.insertAfter('span.page-number:last');
+        
+        $next.click(function (e) {
+            $previous.addClass('clickable');
+            $pager.find('.active').next('.page-number.clickable').click();
+        });
+        $previous.click(function (e) {
+            $next.addClass('clickable');
+            $pager.find('.active').prev('.page-number.clickable').click();
+        });
+        $table.on('repaginate', function () {
+            $next.addClass('clickable');
+            $previous.addClass('clickable');
+            
+            setTimeout(function () {
+                var $active = $pager.find('.page-number.active');
+                if ($active.next('.page-number.clickable').length === 0) {
+                    $next.removeClass('clickable');
+                } else if ($active.prev('.page-number.clickable').length === 0) {
+                    $previous.removeClass('clickable');
+                }
+            });
+        });
+        $table.trigger('repaginate');
+    });
+
+		</script>
 	</body>
 </html>

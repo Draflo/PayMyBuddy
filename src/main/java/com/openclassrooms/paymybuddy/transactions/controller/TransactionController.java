@@ -1,13 +1,15 @@
 package com.openclassrooms.paymybuddy.transactions.controller;
 
 import java.time.LocalDate;
-import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,25 +25,16 @@ import com.openclassrooms.paymybuddy.transactions.service.TransactionService;
 
 @Controller
 public class TransactionController {
-	
+
 	@Autowired
 	private TransactionService transactionService;
-	
+
 	@Autowired
 	private BuddyRepository buddyRepository;
-	
+
 	@Autowired
 	private AccountsRepository accountsRepository;
-	
-	@GetMapping("/myTransactions")
-	public String myTransactions (Model model, Authentication authentication) {
-		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-		String username = loggedInUser.getName();
-		List<Transaction> myTransactions = transactionService.findByUsersUsername(username);
-		model.addAttribute("myTransactions", myTransactions);
-		return "myTransactions";
-	}
-	
+
 	@GetMapping("/transfer")
 	public String transferForm(Model model, Authentication authentication) {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
@@ -54,9 +47,10 @@ public class TransactionController {
 		model.addAttribute("connections", myAccounts.getConnections());
 		return "transfer";
 	}
-	
+
 	@PostMapping("/transfer")
-	public String transfer (@ModelAttribute("transaction") Transaction transactionInfo, Model model, Authentication authentication) throws InsufficientFundsException, ConnectionDoesNotExistException {
+	public String transfer(@Valid @ModelAttribute("transaction") Transaction transactionInfo, Model model,
+			Authentication authentication, BindingResult bindingResult) {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = loggedInUser.getName();
 		Buddy myself = buddyRepository.findByUsersUsername(username);
@@ -72,7 +66,14 @@ public class TransactionController {
 		transaction.setAmount(amount);
 		transaction.setDescription(description);
 		transaction.setFee(0.05);
-		transactionService.validation(myAccounts, transaction);
+		try {
+			transactionService.validation(myAccounts, transaction);
+		} catch (InsufficientFundsException e) {
+			bindingResult.rejectValue("amount", e.getErrorCode(), e.getDefaultMessage());
+			return "transfer";
+		} catch (ConnectionDoesNotExistException e) {
+			e.printStackTrace();
+		}
 		transactionService.balanceUpdate(myAccounts, transaction.getReceiverAccounts(), transaction);
 		transactionService.saveTransaction(transaction);
 		return "redirect:/myAccount";

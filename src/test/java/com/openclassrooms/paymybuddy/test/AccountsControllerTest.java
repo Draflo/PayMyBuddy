@@ -25,6 +25,7 @@ import com.openclassrooms.paymybuddy.security.model.Buddy;
 import com.openclassrooms.paymybuddy.security.repository.UserRepository;
 import com.openclassrooms.paymybuddy.security.service.BuddyService;
 import com.openclassrooms.paymybuddy.security.service.UserService;
+import com.openclassrooms.paymybuddy.transactions.service.TransactionService;
 
 @WebMvcTest(controllers = AccountsController.class)
 class AccountsControllerTest {
@@ -49,6 +50,9 @@ class AccountsControllerTest {
 
 	@MockBean
 	private AccountsService accountsService;
+	
+	@MockBean
+	private TransactionService transactionService;
 
 	@Before
 	void setup() {
@@ -65,7 +69,7 @@ class AccountsControllerTest {
 		testAccounts.setAccountNumber("1012345");
 		when(buddyService.findByUsersUsername("user")).thenReturn(testBuddy);
 		when(accountsService.findByBuddyEmail("testmail.com")).thenReturn(testAccounts);
-		mockMvc.perform(post("/createAccount").with(csrf().asHeader())).andExpect(view().name("createdAccount"));
+		mockMvc.perform(post("/createAccount").with(csrf().asHeader())).andExpect(view().name("redirect:/myAccounts"));
 	}
 
 	@Test

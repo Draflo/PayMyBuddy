@@ -24,23 +24,30 @@ public class AccountsController {
 
 	@Autowired
 	private AccountsService accountsService;
-	
+
 	@Autowired
 	private TransactionService transactionService;
 
 	@Autowired
 	private BuddyService buddyService;
 
+	
 	@RequestMapping(value = "/createAccount", method = { RequestMethod.GET, RequestMethod.POST })
-	public String createAccount(Model model, Authentication authentication) throws AccountsAlreadyExistException {
+	public String createAccount(Model model, Authentication authentication) {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = loggedInUser.getName();
 		Buddy findByUsersUsername = buddyService.findByUsersUsername(username);
-		accountsService.createAccount(findByUsersUsername);
+		String message = "This accounts does not exists";
+		try {
+			accountsService.createAccount(findByUsersUsername);
+		} catch (AccountsAlreadyExistException e) {
+			model.addAttribute("error", message);
+			return "createBuddy";
+		}
 		Accounts createdAccounts = accountsService.findByBuddyEmail(findByUsersUsername.getEmail());
 		model.addAttribute("balance", createdAccounts.getBalance());
 		model.addAttribute("numberAcc", createdAccounts.getAccountNumber());
-		return "createdAccount";
+		return "redirect:/myAccounts";
 	}
 
 	@GetMapping("/myAccount")
@@ -49,11 +56,15 @@ public class AccountsController {
 		String username = loggedInUser.getName();
 		Buddy findByUsersUsername = buddyService.findByUsersUsername(username);
 		Accounts accounts = accountsService.findByBuddyEmail(findByUsersUsername.getEmail());
-		List<Transaction> myTransactions = transactionService.findByUsersUsername(username);
-		model.addAttribute("myTransactions", myTransactions);
-		model.addAttribute("balance", accounts.getBalance());
-		model.addAttribute("numberAcc", accounts.getAccountNumber());
-		return "myAccount";
+		if (accounts == null) {
+			return "redirect:/createBuddy";
+		} else {
+			List<Transaction> myTransactions = transactionService.findByUsersUsername(username);
+			model.addAttribute("myTransactions", myTransactions);
+			model.addAttribute("balance", accounts.getBalance());
+			model.addAttribute("numberAcc", accounts.getAccountNumber());
+			return "myAccount";
+		}
 	}
 
 }
