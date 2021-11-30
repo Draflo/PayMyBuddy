@@ -18,6 +18,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,6 +36,7 @@ public class Users {
 	@Column(name = "username")
 	@NotNull(message = "Usernament cannot be empty")
 	@NotEmpty
+	@UniqueElements
 	private String username;
 
 	@Column(name = "password")
