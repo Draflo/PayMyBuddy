@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,6 +26,7 @@ import com.openclassrooms.paymybuddy.exception.BankAccountDoesNotExist;
 import com.openclassrooms.paymybuddy.exception.InsufficientFundsException;
 import com.openclassrooms.paymybuddy.security.model.Buddy;
 import com.openclassrooms.paymybuddy.security.repository.BuddyRepository;
+import com.openclassrooms.paymybuddy.security.service.BuddyService;
 import com.openclassrooms.paymybuddy.transactions.model.WithdrawalDeposit;
 import com.openclassrooms.paymybuddy.transactions.repository.WithdrawalDepositRepository;
 import com.openclassrooms.paymybuddy.transactions.service.WithdrawalDepositService;
@@ -53,12 +55,18 @@ class WithdrawalDepositTest {
 	@Autowired
 	private WithdrawalDepositService withdrawalDepositService;
 	
+	@MockBean
+	private BuddyService buddyService;
+	
 	@Test
 	@WithMockUser
 	final void testFindByUsersUsername() {
 		WithdrawalDeposit withdrawalDeposit = new WithdrawalDeposit();
 		Accounts myAccounts = new Accounts();
+		myAccounts.setId(0);
 		BankAccount myBankAccount = new BankAccount();
+		Buddy buddy = new Buddy();
+		buddy.setAccounts(myAccounts);
 		LocalDate localDate = LocalDate.now();
 		withdrawalDeposit.setAmount(20);
 		withdrawalDeposit.setId(1);
@@ -68,7 +76,8 @@ class WithdrawalDepositTest {
 		List<WithdrawalDeposit> myTransactions = new ArrayList<>();
 		myTransactions.add(withdrawalDeposit);
 		
-		when(withdrawalDepositRepository.findByUsersUsername("user")).thenReturn(myTransactions);
+		when(buddyService.findByUsersUsername("user")).thenReturn(buddy);
+		when(withdrawalDepositRepository.findByUsersUsername(Mockito.anyLong())).thenReturn(myTransactions);
 		
 		List<WithdrawalDeposit> listFound = withdrawalDepositService.findByUsersUsername("user");
 		
@@ -76,7 +85,7 @@ class WithdrawalDepositTest {
 	}
 	
 	@Test
-	final void testSaveTransaction() throws AccountsDoesNotExistException {
+	final void testSaveWidthdrawalDeposit() throws AccountsDoesNotExistException {
 		WithdrawalDeposit withdrawalDeposit = new WithdrawalDeposit();
 		Accounts myAccounts = new Accounts();
 		BankAccount myBankAccount = new BankAccount();

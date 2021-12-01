@@ -3,6 +3,8 @@ package com.openclassrooms.paymybuddy.transactions.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,8 @@ import com.openclassrooms.paymybuddy.accounts.repository.AccountsRepository;
 import com.openclassrooms.paymybuddy.accounts.service.BankAccountService;
 import com.openclassrooms.paymybuddy.exception.BankAccountDoesNotExist;
 import com.openclassrooms.paymybuddy.exception.InsufficientFundsException;
+import com.openclassrooms.paymybuddy.security.model.Buddy;
+import com.openclassrooms.paymybuddy.security.service.BuddyService;
 import com.openclassrooms.paymybuddy.transactions.model.WithdrawalDeposit;
 import com.openclassrooms.paymybuddy.transactions.repository.WithdrawalDepositRepository;
 
@@ -26,6 +30,9 @@ public class WithdrawalDepositService {
 	
 	@Autowired
 	private BankAccountService bankAccountService;
+	
+	@Autowired
+	private BuddyService buddyService;
 
 	@Transactional
 	public WithdrawalDeposit saveWithdrawalDeposit(WithdrawalDeposit withdrawalDeposit) {
@@ -55,7 +62,10 @@ public class WithdrawalDepositService {
 	}
 
 	public List<WithdrawalDeposit> findByUsersUsername(String username) {
-		List<WithdrawalDeposit> myWithdrawalDeposits = withdrawalDepositRepository.findByUsersUsername(username);
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		username = loggedInUser.getName();
+		Buddy findByUsersUsername = buddyService.findByUsersUsername(username);
+		List<WithdrawalDeposit> myWithdrawalDeposits = withdrawalDepositRepository.findByUsersUsername(findByUsersUsername.getAccounts().getId());
 		return myWithdrawalDeposits;
 	}
 }

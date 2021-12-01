@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,7 +23,9 @@ import com.openclassrooms.paymybuddy.accounts.repository.AccountsRepository;
 import com.openclassrooms.paymybuddy.exception.AccountsDoesNotExistException;
 import com.openclassrooms.paymybuddy.exception.ConnectionDoesNotExistException;
 import com.openclassrooms.paymybuddy.exception.InsufficientFundsException;
+import com.openclassrooms.paymybuddy.security.model.Buddy;
 import com.openclassrooms.paymybuddy.security.repository.BuddyRepository;
+import com.openclassrooms.paymybuddy.security.service.BuddyService;
 import com.openclassrooms.paymybuddy.transactions.model.Transaction;
 import com.openclassrooms.paymybuddy.transactions.repository.TransactionRepository;
 import com.openclassrooms.paymybuddy.transactions.service.TransactionService;
@@ -45,12 +48,18 @@ class TransactionTest {
 	@Autowired
 	private TransactionService transactionService;
 	
+	@MockBean
+	private BuddyService buddyService;
+	
 	@Test
 	@WithMockUser
 	final void testFindByUsersUsername() {
 		Transaction transaction = new Transaction();
 		Accounts senderAccounts = new Accounts();
+		senderAccounts.setId(0);
 		Accounts receiver = new Accounts();
+		Buddy buddy = new Buddy();
+		buddy.setAccounts(senderAccounts);
 		LocalDate localDate = LocalDate.now();
 		transaction.setAmount(20);
 		transaction.setDescription("Test");
@@ -62,7 +71,8 @@ class TransactionTest {
 		List<Transaction> myTransactions = new ArrayList<>();
 		myTransactions.add(transaction);
 		
-		when(transactionRepository.findByUsersUsername("user")).thenReturn(myTransactions);
+		when(buddyService.findByUsersUsername("user")).thenReturn(buddy);
+		when(transactionRepository.findByUsersUsername(Mockito.anyLong())).thenReturn(myTransactions);
 		
 		List<Transaction> listFound = transactionService.findByUsersUsername("user");
 		
@@ -113,8 +123,8 @@ class TransactionTest {
 		
 		transactionService.balanceUpdate(myAccounts, beneficiary, transaction);
 		
-		assertThat(myAccounts.getBalance()).isEqualTo(79.9);
-		assertThat(beneficiary.getBalance()).isEqualTo(20);
+		assertThat(myAccounts.getBalance()).isEqualTo(80);
+		assertThat(beneficiary.getBalance()).isEqualTo(19.9);
 		
 	}
 	
