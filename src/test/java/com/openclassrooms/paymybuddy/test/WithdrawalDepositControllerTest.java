@@ -60,8 +60,10 @@ class WithdrawalDepositControllerTest {
 		myself.setEmail("myself@mail.com");
 		Accounts myAccounts = new Accounts();
 		myAccounts.setBalance(100);
+		BankAccount myBankAccount = new BankAccount();
 		when(buddyRepository.findByUsersUsername("user")).thenReturn(myself);
 		when(accountsRepository.findByBuddyEmail("myself@mail.com")).thenReturn(myAccounts);
+		when(bankAccountRepository.findByAccountsBuddyEmail("myself@mail.com")).thenReturn(myBankAccount);
 		mockMvc.perform(get("/withdrawal").with(csrf().asHeader())).andExpect(status().isOk()).andExpect(view().name("withdrawal"));
 	}
 	
@@ -72,9 +74,35 @@ class WithdrawalDepositControllerTest {
 		myself.setEmail("myself@mail.com");
 		Accounts myAccounts = new Accounts();
 		myAccounts.setBalance(100);
+		BankAccount myBankAccount = new BankAccount();
 		when(buddyRepository.findByUsersUsername("user")).thenReturn(myself);
 		when(accountsRepository.findByBuddyEmail("myself@mail.com")).thenReturn(myAccounts);
+		when(bankAccountRepository.findByAccountsBuddyEmail("myself@mail.com")).thenReturn(myBankAccount);
 		mockMvc.perform(get("/deposit")).andExpect(status().isOk()).andExpect(view().name("deposit"));
+	}
+	
+	@Test
+	@WithMockUser(roles = "user")
+	final void testWithdrawalFormRedirectHome() throws Exception {
+		Buddy myself = new Buddy();
+		myself.setEmail("myself@mail.com");
+		Accounts myAccounts = new Accounts();
+		myAccounts.setBalance(100);
+		when(buddyRepository.findByUsersUsername("user")).thenReturn(myself);
+		when(accountsRepository.findByBuddyEmail("myself@mail.com")).thenReturn(myAccounts);
+		mockMvc.perform(get("/withdrawal").with(csrf().asHeader())).andExpect(status().isFound()).andExpect(view().name("redirect:/home"));
+	}
+	
+	@Test
+	@WithMockUser(roles = "user")
+	final void testDepositFormRedirectHome() throws Exception {
+		Buddy myself = new Buddy();
+		myself.setEmail("myself@mail.com");
+		Accounts myAccounts = new Accounts();
+		myAccounts.setBalance(100);
+		when(buddyRepository.findByUsersUsername("user")).thenReturn(myself);
+		when(accountsRepository.findByBuddyEmail("myself@mail.com")).thenReturn(myAccounts);
+		mockMvc.perform(get("/deposit")).andExpect(status().isFound()).andExpect(view().name("redirect:/home"));
 	}
 
 	@Test

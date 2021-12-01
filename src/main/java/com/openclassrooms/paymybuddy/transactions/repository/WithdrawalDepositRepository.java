@@ -12,7 +12,7 @@ import com.openclassrooms.paymybuddy.transactions.model.WithdrawalDeposit;
 public interface WithdrawalDepositRepository extends CrudRepository<WithdrawalDeposit
 , Long> {
 	
-	@Query("SELECT wd FROM WithdrawalDeposit wd")
-	List<WithdrawalDeposit> findByUsersUsername(String username);
+	@Query("SELECT wd FROM WithdrawalDeposit wd where wd.myAccounts.id = ?1 ")
+	List<WithdrawalDeposit> findByUsersUsername(Long id);
 
 }

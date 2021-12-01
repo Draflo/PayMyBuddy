@@ -65,7 +65,7 @@ public class TransactionController {
 		transaction.setTransactionDate(LocalDate.now());
 		transaction.setAmount(amount);
 		transaction.setDescription(description);
-		transaction.setFee(0.05);
+		transaction.setFee(0.005*amount);
 		try {
 			transactionService.validation(myAccounts, transaction);
 		} catch (InsufficientFundsException e) {
