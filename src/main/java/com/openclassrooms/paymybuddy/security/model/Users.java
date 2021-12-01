@@ -18,8 +18,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.UniqueElements;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,12 +34,11 @@ public class Users {
 	@Column(name = "username")
 	@NotNull(message = "Usernament cannot be empty")
 	@NotEmpty
-	@UniqueElements
 	private String username;
 
 	@Column(name = "password")
 	@NotNull(message = "Password cannot be null")
-	@Size(min = 5, max = 32, message = "Password must be between 5 and 32 characters")
+	@Size(min = 5, message = "Password must be at least 5 characters")
 	private String password;
 
 	@Column

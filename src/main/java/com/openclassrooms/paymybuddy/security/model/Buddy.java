@@ -11,8 +11,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.UniqueElements;
-
 import com.openclassrooms.paymybuddy.accounts.model.Accounts;
 
 import lombok.Getter;
@@ -47,7 +45,6 @@ public class Buddy {
 	
 	@NotNull(message = "Email cannot be empty")
 	@NotEmpty
-	@UniqueElements
 	private String email;
 	
 	@NotNull(message = "Birthdate cannot be empty")
